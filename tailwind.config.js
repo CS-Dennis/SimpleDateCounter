@@ -2,7 +2,14 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      colors: {
+        matrix_dark: "#262d1e",
+        matrix_dark_green: "#345530",
+        matrix_green: "#3b673f",
+        matrix_light_green: "#5a8662",
+      },
+    },
   },
   plugins: [],
 };
