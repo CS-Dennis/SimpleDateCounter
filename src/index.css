@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: "matrix";
+    src: url(/src/assets/fonts/MartixRegular.otf) format("otf");
+  }
+}
+
+.dark-theme {
+  background-color: #262d1e;
+  color: #00ff41;
+  font-family: "matrix";
+}
+
+.light-theme {
+}

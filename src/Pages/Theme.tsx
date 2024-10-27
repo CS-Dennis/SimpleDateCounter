@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import React from "react";
 
 export default function Theme() {
   return (
@@ -15,6 +14,12 @@ export default function Theme() {
           green
         </Box>
         <Box className='bg-matrix_light_green text-white w-full flex justify-center items-center'>
+          light green
+        </Box>
+        <Box className='bg-matrix_blue_green text-white w-full flex justify-center items-center'>
+          light green
+        </Box>
+        <Box className='bg-matrix_jade_green w-full flex justify-center items-center text-black'>
           light green
         </Box>
       </Box>
