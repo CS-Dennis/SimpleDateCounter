@@ -4,6 +4,7 @@ import DateComponent from "../Components/DateComponent";
 import { Box } from "@mui/material";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import TimeZoneComponent from "../Components/TimeZoneComponent";
 
 export default function Home() {
   const [currentMoment, setCurrentMoment] = useState(moment());
@@ -25,6 +26,9 @@ export default function Home() {
           </Box>
           <Box className='flex justify-center'>
             <DateComponent currentMoment={currentMoment} />
+          </Box>
+          <Box>
+            <TimeZoneComponent currentMoment={currentMoment} />
           </Box>
         </Box>
       </div>
