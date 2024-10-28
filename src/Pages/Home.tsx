@@ -21,11 +21,11 @@ export default function Home() {
           <Link to={"/theme"} className='underline'>
             Theme
           </Link>
-          <Box className='flex justify-center'>
-            <ClockComponent currentMoment={currentMoment} />
+          <Box className='flex justify-center mt-10'>
+            <DateComponent currentMoment={currentMoment} />
           </Box>
           <Box className='flex justify-center'>
-            <DateComponent currentMoment={currentMoment} />
+            <ClockComponent currentMoment={currentMoment} />
           </Box>
           <Box>
             <TimeZoneComponent currentMoment={currentMoment} />
