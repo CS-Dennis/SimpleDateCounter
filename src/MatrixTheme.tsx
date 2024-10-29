@@ -4,10 +4,10 @@ export const MatrixTheme: ThemeOptions = createTheme({
   palette: {
     mode: "dark",
     primary: {
-      main: "#008f11",
+      main: "#00ff41",
     },
     secondary: {
-      main: "#00ff41",
+      main: "#5a8662",
     },
     background: {
       paper: "#3b673f",

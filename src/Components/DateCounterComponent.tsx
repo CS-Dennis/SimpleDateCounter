@@ -1,5 +1,9 @@
 import { Box } from "@mui/material";
-import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import {
+  DatePicker,
+  LocalizationProvider,
+  MobileDatePicker,
+} from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -8,12 +12,18 @@ export default function DateCounterComponent({ startDate }: any) {
   const [endDate, setEndDate] = useState<moment.Moment | null>(null);
   const [daysDiff, setDaysDiff] = useState<number>(0);
   const [hoursDiff, setHoursDiff] = useState<number>(0);
+  const [negtive, setNegtive] = useState(false);
 
   useEffect(() => {
-    console.log(moment.duration(endDate?.diff(startDate)).hours());
-
-    const days = moment.duration(endDate?.diff(startDate)).days();
-    const hours = moment.duration(endDate?.diff(startDate)).hours();
+    var totalHours = moment.duration(endDate?.diff(startDate)).asHours();
+    if (totalHours < 0) {
+      setNegtive(true);
+      totalHours = -totalHours;
+    } else {
+      setNegtive(false);
+    }
+    const days = Math.floor(totalHours / 24);
+    const hours = Math.round(totalHours - days * 24);
     setDaysDiff(days);
     setHoursDiff(hours);
   }, [endDate]);
@@ -21,7 +31,8 @@ export default function DateCounterComponent({ startDate }: any) {
   return (
     <>
       <Box className='flex justify-center'>
-        <Box className='mr-10 text-4xl'>
+        <Box className='flex items-center mr-4 text-4xl '>
+          {negtive && `-`}
           {`${daysDiff} `}
           {daysDiff < -1 || daysDiff > 1 ? `days ` : `day `}
           {`${hoursDiff} `}
@@ -30,7 +41,12 @@ export default function DateCounterComponent({ startDate }: any) {
         </Box>
         <Box>
           <LocalizationProvider dateAdapter={AdapterMoment}>
-            <DatePicker
+            <MobileDatePicker
+              slotProps={{
+                actionBar: {
+                  actions: ["today"],
+                },
+              }}
               label='Date Picker'
               defaultValue={null}
               onChange={(target) => setEndDate(target)}
