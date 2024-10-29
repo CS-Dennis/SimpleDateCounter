@@ -2,6 +2,7 @@ import { Box } from "@mui/material";
 import { constants } from "../Utils/Constants";
 import { useEffect, useState } from "react";
 import moment from "moment";
+import { getStringBetweenMoments } from "../Utils/Utils";
 
 export default function HolidaysComponent({ currentMoment }: any) {
   const [newYear, setNewYear] = useState<moment.Moment>();
@@ -170,12 +171,6 @@ export default function HolidaysComponent({ currentMoment }: any) {
     } else {
       setChristmas(moment(currentYear + "-12-25", "YYYY-M-D"));
     }
-
-    console.log(
-      moment(currentMoment.year() + "-1-1", "YYYY-M-D").diff(currentMoment)
-    );
-
-    console.log(currentMoment.toISOString());
   }, []);
 
   return (
@@ -183,43 +178,87 @@ export default function HolidaysComponent({ currentMoment }: any) {
       <Box className='flex flex-col justify-center items-center text-2xl'>
         <Box className='font-bold text-3xl mb-2'>Upcoming Holidays</Box>
         <Box>
+          {`${getStringBetweenMoments(
+            currentMoment,
+            newYear || currentMoment
+          )} => `}
           {constants.holidays.newYear} {` ${newYear?.format("MM/DD/YYYY")}`}
         </Box>
         <Box>
+          {`${getStringBetweenMoments(
+            currentMoment,
+            mlk || currentMoment
+          )} => `}{" "}
           {constants.holidays.MLK} {` ${mlk?.format("MM/DD/YYYY")}`}
         </Box>
         <Box>
+          {`${getStringBetweenMoments(
+            currentMoment,
+            washington || currentMoment
+          )} => `}
           {constants.holidays.washington}
           {` ${washington?.format("MM/DD/YYYY")}`}
         </Box>
         <Box>
+          {`${getStringBetweenMoments(
+            currentMoment,
+            memorial || currentMoment
+          )} => `}
           {constants.holidays.memorialDay}
           {` ${memorial?.format("MM/DD/YYYY")}`}
         </Box>
         <Box>
+          {`${getStringBetweenMoments(
+            currentMoment,
+            juneteenth || currentMoment
+          )} => `}
           {constants.holidays.juneteenth}
           {` ${juneteenth?.format("MM/DD/YYYY")}`}
         </Box>
         <Box>
+          {`${getStringBetweenMoments(
+            currentMoment,
+            independence || currentMoment
+          )} => `}{" "}
           {constants.holidays.independenceDay}
           {` ${independence?.format("MM/DD/YYYY")}`}
         </Box>
         <Box>
+          {`${getStringBetweenMoments(
+            currentMoment,
+            labor || currentMoment
+          )} => `}
           {constants.holidays.laborDay} {` ${labor?.format("MM/DD/YYYY")}`}
         </Box>
         <Box>
+          {`${getStringBetweenMoments(
+            currentMoment,
+            columbus || currentMoment
+          )} => `}
           {constants.holidays.columbusDay}
           {` ${columbus?.format("MM/DD/YYYY")}`}
         </Box>
         <Box>
+          {`${getStringBetweenMoments(
+            currentMoment,
+            veterans || currentMoment
+          )} => `}
           {constants.holidays.veteransDay}
           {` ${veterans?.format("MM/DD/YYYY")}`}
         </Box>
         <Box>
+          {`${getStringBetweenMoments(
+            currentMoment,
+            thanksgiving || currentMoment
+          )} => `}{" "}
           {constants.holidays.thanksgivingDay}
           {` ${thanksgiving?.format("MM/DD/YYYY")}`}
         </Box>
         <Box>
+          {`${getStringBetweenMoments(
+            currentMoment,
+            christmas || currentMoment
+          )} => `}{" "}
           {constants.holidays.christmasDay}
           {` ${christmas?.format("MM/DD/YYYY")}`}
         </Box>
