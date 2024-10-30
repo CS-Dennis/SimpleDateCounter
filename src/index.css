@@ -10,10 +10,15 @@
 }
 
 .dark-theme {
-  background-color: #262d1e;
+  background-image: linear-gradient(to bottom, #262d1e, #000);
   color: #00ff41;
   font-family: "matrix";
 }
 
 .light-theme {
+}
+
+.date-card-dark-theme:hover {
+  color: #fff;
+  background-image: linear-gradient(to bottom, #262d1e, #000);
 }

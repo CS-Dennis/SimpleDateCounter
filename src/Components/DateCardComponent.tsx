@@ -13,7 +13,7 @@ export default function DateCardComponent({
 }) {
   return (
     <>
-      <Box className='border-solid border-2 border-matrix_light_green p-4 mx-2 mb-2 flex flex-col justify-center items-center min-h-44'>
+      <Box className='border-solid border-2 border-matrix_light_green p-4 mx-2 mb-2 flex flex-col justify-center items-center min-h-44 cursor-pointer date-card-dark-theme'>
         <Box>{dateName}</Box>
         <Box>{nextMoment?.format("MM/DD/YYYY")}</Box>
         <Box>

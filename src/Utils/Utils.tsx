@@ -16,7 +16,7 @@ export const getStringBetweenMoments = (
   const days = Math.floor(totalHours / 24);
   const hours = totalHours - days * 24;
 
-  return `${days} ${days > 0 ? "days" : "day"} ${hours} ${
-    hours > 0 ? "hours" : "hour"
+  return `${days} ${days > 1 ? "days" : "day"} ${hours} ${
+    hours > 1 ? "hours" : "hour"
   }`;
 };

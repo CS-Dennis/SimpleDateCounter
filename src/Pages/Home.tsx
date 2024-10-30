@@ -39,7 +39,7 @@ export default function Home() {
               <DateCounterComponent startDate={currentMoment} />
             </Box>
 
-            <Box className='mt-10'>
+            <Box className='mt-4'>
               <HolidaysComponent currentMoment={currentMoment} />
             </Box>
           </Box>
