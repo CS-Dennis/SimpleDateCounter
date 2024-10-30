@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import ClockComponent from "../Components/ClockComponent";
 import DateComponent from "../Components/DateComponent";
-import { Box } from "@mui/material";
+import { Box, Grid2 as Grid } from "@mui/material";
 import moment from "moment";
 import { useEffect, useState } from "react";
 import TimeZoneComponent from "../Components/TimeZoneComponent";
@@ -18,30 +18,34 @@ export default function Home() {
 
   return (
     <>
-      <div className='text-matrix_dark'>
-        <Box className='dark-theme min-h-screen'>
-          <Link to={"/theme"} className='underline'>
-            Theme
-          </Link>
-          <Box className='flex justify-center mt-10'>
-            <DateComponent currentMoment={currentMoment} />
-          </Box>
-          <Box className='flex justify-center'>
-            <ClockComponent currentMoment={currentMoment} />
-          </Box>
-          <Box>
-            <TimeZoneComponent currentMoment={currentMoment} />
-          </Box>
+      <Grid container className='dark-theme'>
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 8 }}>
+          <Box className='min-h-screen pb-10'>
+            <Link to={"/theme"} className='underline'>
+              Theme
+            </Link>
+            <Box className='flex justify-center mt-10'>
+              <DateComponent currentMoment={currentMoment} />
+            </Box>
+            <Box className='flex justify-center'>
+              <ClockComponent currentMoment={currentMoment} />
+            </Box>
+            <Box>
+              <TimeZoneComponent currentMoment={currentMoment} />
+            </Box>
 
-          <Box className='mt-10'>
-            <DateCounterComponent startDate={currentMoment} />
-          </Box>
+            <Box className='mt-10'>
+              <DateCounterComponent startDate={currentMoment} />
+            </Box>
 
-          <Box className='mt-10'>
-            <HolidaysComponent currentMoment={currentMoment} />
+            <Box className='mt-10'>
+              <HolidaysComponent currentMoment={currentMoment} />
+            </Box>
           </Box>
-        </Box>
-      </div>
+        </Grid>
+        <Grid size={{ xs: 12, md: 2 }}></Grid>
+      </Grid>
     </>
   );
 }

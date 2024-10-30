@@ -1,8 +1,8 @@
-import { Box } from "@mui/material";
+import { Box, Grid2 as Grid } from "@mui/material";
 import { constants } from "../Utils/Constants";
 import { useEffect, useState } from "react";
 import moment from "moment";
-import { getStringBetweenMoments } from "../Utils/Utils";
+import DateCardComponent from "./DateCardComponent";
 
 export default function HolidaysComponent({ currentMoment }: any) {
   const [newYear, setNewYear] = useState<moment.Moment>();
@@ -177,91 +177,108 @@ export default function HolidaysComponent({ currentMoment }: any) {
     <>
       <Box className='flex flex-col justify-center items-center text-2xl'>
         <Box className='font-bold text-3xl mb-2'>Upcoming Holidays</Box>
-        <Box>
-          {`${getStringBetweenMoments(
-            currentMoment,
-            newYear || currentMoment
-          )} => `}
-          {constants.holidays.newYear} {` ${newYear?.format("MM/DD/YYYY")}`}
-        </Box>
-        <Box>
-          {`${getStringBetweenMoments(
-            currentMoment,
-            mlk || currentMoment
-          )} => `}{" "}
-          {constants.holidays.MLK} {` ${mlk?.format("MM/DD/YYYY")}`}
-        </Box>
-        <Box>
-          {`${getStringBetweenMoments(
-            currentMoment,
-            washington || currentMoment
-          )} => `}
-          {constants.holidays.washington}
-          {` ${washington?.format("MM/DD/YYYY")}`}
-        </Box>
-        <Box>
-          {`${getStringBetweenMoments(
-            currentMoment,
-            memorial || currentMoment
-          )} => `}
-          {constants.holidays.memorialDay}
-          {` ${memorial?.format("MM/DD/YYYY")}`}
-        </Box>
-        <Box>
-          {`${getStringBetweenMoments(
-            currentMoment,
-            juneteenth || currentMoment
-          )} => `}
-          {constants.holidays.juneteenth}
-          {` ${juneteenth?.format("MM/DD/YYYY")}`}
-        </Box>
-        <Box>
-          {`${getStringBetweenMoments(
-            currentMoment,
-            independence || currentMoment
-          )} => `}{" "}
-          {constants.holidays.independenceDay}
-          {` ${independence?.format("MM/DD/YYYY")}`}
-        </Box>
-        <Box>
-          {`${getStringBetweenMoments(
-            currentMoment,
-            labor || currentMoment
-          )} => `}
-          {constants.holidays.laborDay} {` ${labor?.format("MM/DD/YYYY")}`}
-        </Box>
-        <Box>
-          {`${getStringBetweenMoments(
-            currentMoment,
-            columbus || currentMoment
-          )} => `}
-          {constants.holidays.columbusDay}
-          {` ${columbus?.format("MM/DD/YYYY")}`}
-        </Box>
-        <Box>
-          {`${getStringBetweenMoments(
-            currentMoment,
-            veterans || currentMoment
-          )} => `}
-          {constants.holidays.veteransDay}
-          {` ${veterans?.format("MM/DD/YYYY")}`}
-        </Box>
-        <Box>
-          {`${getStringBetweenMoments(
-            currentMoment,
-            thanksgiving || currentMoment
-          )} => `}{" "}
-          {constants.holidays.thanksgivingDay}
-          {` ${thanksgiving?.format("MM/DD/YYYY")}`}
-        </Box>
-        <Box>
-          {`${getStringBetweenMoments(
-            currentMoment,
-            christmas || currentMoment
-          )} => `}{" "}
-          {constants.holidays.christmasDay}
-          {` ${christmas?.format("MM/DD/YYYY")}`}
-        </Box>
+        <Grid container>
+          <Grid size={{ xs: 12, md: 4, xl: 3 }}>
+            <Box>
+              <DateCardComponent
+                currentMoment={currentMoment}
+                nextMoment={newYear || moment()}
+                dateName={constants.holidays.newYear}
+              />
+            </Box>
+          </Grid>
+
+          <Grid size={{ xs: 12, md: 4, xl: 3 }}>
+            <Box>
+              <DateCardComponent
+                currentMoment={currentMoment}
+                nextMoment={mlk || moment()}
+                dateName={constants.holidays.MLK}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4, xl: 3 }}>
+            <Box>
+              <DateCardComponent
+                currentMoment={currentMoment}
+                nextMoment={washington || moment()}
+                dateName={constants.holidays.washington}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4, xl: 3 }}>
+            <Box>
+              <DateCardComponent
+                currentMoment={currentMoment}
+                nextMoment={memorial || moment()}
+                dateName={constants.holidays.memorialDay}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4, xl: 3 }}>
+            <Box>
+              <DateCardComponent
+                currentMoment={currentMoment}
+                nextMoment={juneteenth || moment()}
+                dateName={constants.holidays.juneteenth}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4, xl: 3 }}>
+            <Box>
+              <DateCardComponent
+                currentMoment={currentMoment}
+                nextMoment={independence || moment()}
+                dateName={constants.holidays.independenceDay}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4, xl: 3 }}>
+            <Box>
+              <DateCardComponent
+                currentMoment={currentMoment}
+                nextMoment={labor || moment()}
+                dateName={constants.holidays.laborDay}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4, xl: 3 }}>
+            <Box>
+              <DateCardComponent
+                currentMoment={currentMoment}
+                nextMoment={columbus || moment()}
+                dateName={constants.holidays.columbusDay}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4, xl: 3 }}>
+            <Box>
+              <DateCardComponent
+                currentMoment={currentMoment}
+                nextMoment={veterans || moment()}
+                dateName={constants.holidays.veteransDay}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4, xl: 3 }}>
+            <Box>
+              <DateCardComponent
+                currentMoment={currentMoment}
+                nextMoment={thanksgiving || moment()}
+                dateName={constants.holidays.thanksgivingDay}
+              />
+            </Box>
+          </Grid>
+          <Grid size={{ xs: 12, md: 4, xl: 3 }}>
+            <Box>
+              <DateCardComponent
+                currentMoment={currentMoment}
+                nextMoment={christmas || moment()}
+                dateName={constants.holidays.christmasDay}
+              />
+            </Box>
+          </Grid>
+        </Grid>
       </Box>
     </>
   );
