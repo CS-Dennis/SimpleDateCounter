@@ -36,7 +36,7 @@ export default function Home() {
             </Box>
 
             <Box className='mt-10'>
-              <DateCounterComponent startDate={currentMoment} />
+              <DateCounterComponent />
             </Box>
 
             <Box className='mt-4'>
