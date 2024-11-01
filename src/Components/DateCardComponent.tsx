@@ -1,6 +1,8 @@
 import { Box } from "@mui/material";
 import { getStringBetweenMoments } from "../Utils/Utils";
 import moment from "moment";
+import { useContext } from "react";
+import { AppContext } from "../App";
 
 export default function DateCardComponent({
   currentMoment,
@@ -11,9 +13,18 @@ export default function DateCardComponent({
   nextMoment: moment.Moment;
   dateName?: string;
 }) {
+  const context = useContext(AppContext);
+
   return (
     <>
-      <Box className='border-solid border-2 border-matrix_light_green p-4 mx-2 mb-2 flex flex-col justify-center items-center min-h-44 cursor-pointer date-card-dark-theme'>
+      <Box
+        className={
+          (context.appTheme.matrixTheme
+            ? `date-card-dark-theme `
+            : `date-card-light-theme `) +
+          `border-solid border-2 border-matrix_light_green p-4 mx-2 mb-2 flex flex-col justify-center items-center min-h-44 cursor-pointer`
+        }
+      >
         <Box>{dateName}</Box>
         <Box>{nextMoment?.format("MM/DD/YYYY")}</Box>
         <Box>

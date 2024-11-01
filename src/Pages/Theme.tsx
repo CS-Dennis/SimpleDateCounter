@@ -20,6 +20,10 @@ export default function Theme() {
           <Box>light green</Box>
           <Box>#5a8662</Box>
         </Box>
+        <Box className='bg-matrix_white_green text-black w-full flex justify-center items-center flex-col'>
+          <Box>white green</Box>
+          <Box>#d3e3d5</Box>
+        </Box>
         <Box className='bg-matrix_blue_green text-white w-full flex justify-center items-center flex-col'>
           <Box>blue green</Box>
           <Box>#008f11</Box>
