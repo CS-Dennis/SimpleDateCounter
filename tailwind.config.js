@@ -8,6 +8,7 @@ export default {
         matrix_dark_green: "#345530",
         matrix_green: "#3b673f",
         matrix_light_green: "#5a8662",
+        matrix_white_green: "#d3e3d5",
         matrix_blue_green: "#008f11",
         matrix_jade_green: "#00ff41",
       },
