@@ -13,9 +13,9 @@ function App() {
 
   useEffect(() => {
     const isMatrixTheme = localStorage.getItem("matrixTheme");
-    if (isMatrixTheme === undefined) {
+    if (isMatrixTheme === null) {
       localStorage.setItem("matrixTheme", "true");
-    } else if (isMatrixTheme !== undefined && isMatrixTheme === "true") {
+    } else if (isMatrixTheme !== null && isMatrixTheme === "true") {
       setAppTheme({ matrixTheme: true });
     } else {
       setAppTheme({ matrixTheme: false });
