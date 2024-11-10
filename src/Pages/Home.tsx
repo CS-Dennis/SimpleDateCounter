@@ -18,7 +18,7 @@ export default function Home() {
     context.setAppTheme({
       matrixTheme: newTheme,
     });
-    sessionStorage.setItem("matrixTheme", newTheme.toString());
+    localStorage.setItem("matrixTheme", newTheme.toString());
   };
 
   useEffect(() => {
@@ -43,7 +43,7 @@ export default function Home() {
                   : "Theme: Light"}
               </Box>
               <Switch
-                checked={sessionStorage.getItem("matrixTheme") === "true"}
+                checked={localStorage.getItem("matrixTheme") === "true"}
                 onChange={() => toggleTheme()}
               />
             </Box>
