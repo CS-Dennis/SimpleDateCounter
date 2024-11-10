@@ -33,7 +33,7 @@ export default function DateCounterComponent() {
       <Box>
         <Grid container className='w-full'>
           <Grid size={{ xs: 12, md: 4 }} className='flex justify-center mb-4'>
-            <Box>
+            <Box className="flex items-center">
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <MobileDatePicker
                   slotProps={{
@@ -57,7 +57,7 @@ export default function DateCounterComponent() {
             </Box>
           </Grid>
           <Grid size={{ xs: 12, md: 4 }} className='flex justify-center mb-4'>
-            <Box>
+            <Box className="flex items-center">
               <LocalizationProvider dateAdapter={AdapterMoment}>
                 <MobileDatePicker
                   slotProps={{
