@@ -1,11 +1,15 @@
 .dateComponent {
-    font-size: 10vw;
+  font-size: 10vmin;
 }
 
 .timeComponent {
-    font-size: 6vw;
+  font-size: 6vmin;
 }
 
 .timeZoneComponent {
-    font-size: 4vw;
+  font-size: 4vmin;
+}
+
+.dateCardTitle {
+  font-size: 2rem;
 }
