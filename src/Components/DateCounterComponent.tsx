@@ -49,7 +49,7 @@ export default function DateCounterComponent() {
             </Box>
           </Grid>
           <Grid size={{ xs: 12, md: 4 }} className='flex justify-center'>
-            <Box className='flex items-center text-4xl mb-4'>
+            <Box className='flex items-center timeZoneComponent mb-4'>
               {negtive && `-`}
               {`${daysDiff} `}
               {daysDiff < -1 || daysDiff > 1 ? `days ` : `day `}

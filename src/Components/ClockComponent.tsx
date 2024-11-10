@@ -7,7 +7,7 @@ export default function ClockComponent({ currentMoment }: any) {
   return (
     <>
       <Box
-        className='font-bold text-4xl cursor-pointer'
+        className='font-bold timeComponent cursor-pointer'
         onClick={() => setTwentyFourMode(!twentyFourMode)}
       >
         {twentyFourMode ? (

@@ -7,7 +7,7 @@ export default function DateComponent({ currentMoment }: any) {
   return (
     <>
       <Box
-        className='text-8xl cursor-pointer'
+        className='cursor-pointer dateComponent'
         onClick={() => {
           setShortDateMode(!shortDateMode);
         }}
