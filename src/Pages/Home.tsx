@@ -33,8 +33,8 @@ export default function Home() {
         container
         className={context.appTheme.matrixTheme ? `dark-theme` : `light-theme`}
       >
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
-        <Grid size={{ xs: 12, md: 8 }}>
+        <Grid size={{ xs: 12, md: 'grow', lg: 1 }}></Grid>
+        <Grid size={{ xs: 12, md: 11, lg: 10 }}>
           <Box className='min-h-screen pb-10'>
             <Box>
               <Box className='font-bold text-lg'>
@@ -66,7 +66,7 @@ export default function Home() {
             </Box>
           </Box>
         </Grid>
-        <Grid size={{ xs: 12, md: 2 }}></Grid>
+        <Grid size={{ xs: 12, md: 'grow', lg: 1 }}></Grid>
       </Grid>
     </>
   );
