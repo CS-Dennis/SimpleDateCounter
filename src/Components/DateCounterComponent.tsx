@@ -38,7 +38,7 @@ export default function DateCounterComponent() {
                 <MobileDatePicker
                   slotProps={{
                     actionBar: {
-                      actions: ["today"],
+                      actions: ["today", "accept"],
                     },
                   }}
                   label='Date Picker'
@@ -62,7 +62,7 @@ export default function DateCounterComponent() {
                 <MobileDatePicker
                   slotProps={{
                     actionBar: {
-                      actions: ["today"],
+                      actions: ["today", "accept"],
                     },
                   }}
                   label='Date Picker'
