@@ -1,6 +1,6 @@
 import ClockComponent from "../Components/ClockComponent";
 import DateComponent from "../Components/DateComponent";
-import { Box, Button, deprecatedPropType, Grid2 as Grid, Modal, Switch, Tab, Tabs, TextField, Tooltip } from "@mui/material";
+import { Box, Button, Grid2 as Grid, Modal, Switch, Tab, Tabs, TextField, Tooltip } from "@mui/material";
 import moment from "moment";
 import { useContext, useEffect, useState } from "react";
 import TimeZoneComponent from "../Components/TimeZoneComponent";
@@ -105,7 +105,7 @@ export default function Home() {
               <DateCounterComponent />
             </Box>
 
-            <Tabs value={tab} onChange={(e, value) => setTab(value)} centered>
+            <Tabs value={tab} onChange={(_e, value) => setTab(value)} centered>
               <Tab label="Holidays" />
               <Tab label="My Dates" />
             </Tabs>

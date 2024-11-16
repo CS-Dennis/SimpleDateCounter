@@ -1,7 +1,7 @@
 import moment from "moment";
 import { MyDate } from "../Types/MyDate";
 import { v4 as uuidv4 } from "uuid";
-import { constants, localStorageKeys } from "./Constants";
+import { localStorageKeys } from "./Constants";
 
 export const getHoursBetweenMoments = (
   startMoment: moment.Moment,
