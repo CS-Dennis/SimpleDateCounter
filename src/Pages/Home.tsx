@@ -1,17 +1,47 @@
 import ClockComponent from "../Components/ClockComponent";
 import DateComponent from "../Components/DateComponent";
-import { Box, Grid2 as Grid, Switch } from "@mui/material";
+import { Box, Button, deprecatedPropType, Grid2 as Grid, Modal, Switch, TextField, Tooltip } from "@mui/material";
 import moment from "moment";
 import { useContext, useEffect, useState } from "react";
 import TimeZoneComponent from "../Components/TimeZoneComponent";
 import DateCounterComponent from "../Components/DateCounterComponent";
 import HolidaysComponent from "../Components/HolidaysComponent";
 import { AppContext } from "../App";
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import { constants } from "../Utils/Constants";
+import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
+import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
+import { getDateMoment, saveMyDate } from "../Utils/Utils";
+import { v4 as uuidv4 } from "uuid";
+import { MyDate } from "../Types/MyDate";
 
 export default function Home() {
   const context = useContext(AppContext);
 
   const [currentMoment, setCurrentMoment] = useState<moment.Moment>(moment());
+  const [showModal, setShowModal] = useState(true);
+
+  // my date object
+  const [dateTitle, setDateTitle] = useState("");
+  const [selectedDate, setSelectedDate] = useState(getDateMoment(moment()));
+
+  const resetModalForm = () => {
+    setDateTitle("");
+    setSelectedDate(getDateMoment(moment()));
+  };
+
+  const saveDate = () => {
+    // saveMyDate();
+    const newMyDate: MyDate = {
+      date: selectedDate,
+      dateTitle: dateTitle,
+      created: moment(),
+      modified: moment()
+    };
+
+    saveMyDate(newMyDate);
+
+  };
 
   const toggleTheme = () => {
     const newTheme = !context.appTheme.matrixTheme;
@@ -36,17 +66,29 @@ export default function Home() {
         <Grid size={{ xs: 12, md: 'grow', lg: 1 }}></Grid>
         <Grid size={{ xs: 12, md: 11, lg: 10 }}>
           <Box className='min-h-screen pb-10'>
-            <Box>
-              <Box className='font-bold text-lg'>
-                {context.appTheme.matrixTheme
-                  ? "Theme: Matrix"
-                  : "Theme: Light"}
+            <Box className="flex place-content-between">
+              <Box>
+                <Box className='font-bold text-lg'>
+                  {context.appTheme.matrixTheme
+                    ? "Theme: Matrix"
+                    : "Theme: Light"}
+                </Box>
+                <Switch
+                  checked={localStorage.getItem("matrixTheme") === "true"}
+                  onChange={() => toggleTheme()}
+                />
               </Box>
-              <Switch
-                checked={localStorage.getItem("matrixTheme") === "true"}
-                onChange={() => toggleTheme()}
-              />
+
+              <Box className="self-center">
+                <Button variant="contained" onClick={() => { setShowModal(true); resetModalForm(); }} >Add My Date</Button>
+                <Tooltip title={
+                  <Box className="whitespace-break-spaces">{constants.addDateButtonHelpText}</Box>
+                } >
+                  <HelpOutlineIcon />
+                </Tooltip>
+              </Box>
             </Box>
+
             <Box className='flex justify-center mt-10'>
               <DateComponent currentMoment={currentMoment} />
             </Box>
@@ -68,6 +110,44 @@ export default function Home() {
         </Grid>
         <Grid size={{ xs: 12, md: 'grow', lg: 1 }}></Grid>
       </Grid>
+
+      <Modal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+      >
+        <Box className="absolute m-auto left-0 top-0 bottom-0 right-0 w-10/12 min-h-fit bg-matrix_green text-matrix_white_green">
+          <Box className="p-4">
+            <Box className="text-matrix_jade_green flex justify-center font-bold">
+              Add A New Date
+            </Box>
+            <Box className="mt-4">
+              <TextField placeholder="Date Title" label="Date Title" className="w-full" onChange={(e) => setDateTitle(e.target.value)} />
+            </Box>
+
+            <Box className="mt-4">
+              <LocalizationProvider dateAdapter={AdapterMoment}>
+                <MobileDatePicker
+                  className="w-full"
+                  slotProps={{
+                    actionBar: {
+                      actions: ["today", "accept"],
+                    },
+                  }}
+                  label='Date Picker'
+                  defaultValue={moment()}
+
+                  onChange={(target) => setSelectedDate(getDateMoment(target || moment()))}
+                />
+              </LocalizationProvider>
+            </Box>
+
+            <Box className="flex place-content-end mt-4">
+              <Button variant="contained" sx={{ marginRight: 4 }} onClick={() => setShowModal(false)}>Cancel</Button>
+              <Button variant="contained" onClick={() => saveDate()}>Save</Button>
+            </Box>
+          </Box>
+        </Box>
+      </Modal>
     </>
   );
 }
