@@ -1,6 +1,6 @@
 import ClockComponent from "../Components/ClockComponent";
 import DateComponent from "../Components/DateComponent";
-import { Box, Button, deprecatedPropType, Grid2 as Grid, Modal, Switch, TextField, Tooltip } from "@mui/material";
+import { Box, Button, deprecatedPropType, Grid2 as Grid, Modal, Switch, Tab, Tabs, TextField, Tooltip } from "@mui/material";
 import moment from "moment";
 import { useContext, useEffect, useState } from "react";
 import TimeZoneComponent from "../Components/TimeZoneComponent";
@@ -12,18 +12,20 @@ import { constants } from "../Utils/Constants";
 import { LocalizationProvider, MobileDatePicker } from "@mui/x-date-pickers";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { getDateMoment, saveMyDate } from "../Utils/Utils";
-import { v4 as uuidv4 } from "uuid";
 import { MyDate } from "../Types/MyDate";
+import MyDatesComponents from "../Components/MyDatesComponents";
 
 export default function Home() {
   const context = useContext(AppContext);
 
   const [currentMoment, setCurrentMoment] = useState<moment.Moment>(moment());
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
 
   // my date object
   const [dateTitle, setDateTitle] = useState("");
   const [selectedDate, setSelectedDate] = useState(getDateMoment(moment()));
+
+  const [tab, setTab] = useState(1);
 
   const resetModalForm = () => {
     setDateTitle("");
@@ -81,7 +83,7 @@ export default function Home() {
 
               <Box className="self-center">
                 <Button variant="contained" onClick={() => { setShowModal(true); resetModalForm(); }} >Add My Date</Button>
-                <Tooltip title={
+                <Tooltip className="ml-1" title={
                   <Box className="whitespace-break-spaces">{constants.addDateButtonHelpText}</Box>
                 } >
                   <HelpOutlineIcon />
@@ -103,9 +105,23 @@ export default function Home() {
               <DateCounterComponent />
             </Box>
 
-            <Box className='mt-4'>
-              <HolidaysComponent currentMoment={currentMoment} />
-            </Box>
+            <Tabs value={tab} onChange={(e, value) => setTab(value)} centered>
+              <Tab label="Holidays" />
+              <Tab label="My Dates" />
+            </Tabs>
+
+            {
+              tab === 0 && <Box className='mt-4'>
+                <HolidaysComponent currentMoment={currentMoment} />
+              </Box>
+            }
+
+            {
+              tab === 1 &&
+              <Box className="mt-4">
+                <MyDatesComponents currentMoment={currentMoment} />
+              </Box>
+            }
           </Box>
         </Grid>
         <Grid size={{ xs: 12, md: 'grow', lg: 1 }}></Grid>
