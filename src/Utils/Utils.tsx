@@ -64,3 +64,30 @@ export const saveMyDate = (myDate: MyDate) => {
   localStorage.setItem(localStorageKeys.myDates, JSON.stringify(withNewMyDate));
 
 };
+
+export const getMyDateByKey = (key: string) => {
+  const myDate = JSON.parse(localStorage.getItem(localStorageKeys.myDates) || "{}")[key];
+  return { [key]: myDate };
+};
+
+export const updateMyDate = (myDateKey: string, myDate: MyDate) => {
+  var currentMyDates = JSON.parse(localStorage.getItem(localStorageKeys.myDates) || "{}");
+
+  currentMyDates = { ...currentMyDates, [myDateKey]: myDate };
+
+  localStorage.setItem(localStorageKeys.myDates, JSON.stringify(currentMyDates));
+};
+
+export const deleteMyDate = (myDateKey: string) => {
+  var currentMyDates = JSON.parse(localStorage.getItem(localStorageKeys.myDates) || "{}");
+  var keys = Object.keys(currentMyDates);
+
+  var newMyDates = {};
+  keys.forEach(key => {
+    if (key !== myDateKey) {
+      newMyDates = { ...newMyDates, [key]: currentMyDates[key] };
+    }
+  });
+
+  localStorage.setItem(localStorageKeys.myDates, JSON.stringify(newMyDates));
+};
