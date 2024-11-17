@@ -7,7 +7,13 @@ import { deleteMyDate, getDateMoment, getMyDateByKey, updateMyDate } from '../Ut
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
-export default function MyDatesComponents({ currentMoment }: { currentMoment: moment.Moment; }) {
+export default function MyDatesComponents({ currentMoment, newMyDateAdded, setNewMyDateAdded }:
+    {
+        currentMoment: moment.Moment;
+        newMyDateAdded: boolean;
+        setNewMyDateAdded: (newMyDateAdded: boolean) => void;
+    }
+) {
     const [allMyDates, setAllMyDates] = useState<any>({});
     const [dateKeys, setDateKeys] = useState<string[]>([]);
 
@@ -31,8 +37,6 @@ export default function MyDatesComponents({ currentMoment }: { currentMoment: mo
         setSelectedMyDateKey(myDateKey);
         setSelectedMyDate(getMyDateByKey(myDateKey));
         console.log(getMyDateByKey(myDateKey));
-
-
         setShowModal(true);
     };
 
@@ -40,9 +44,6 @@ export default function MyDatesComponents({ currentMoment }: { currentMoment: mo
         if (!formChanged) {
             setFormChanged(true);
         }
-
-
-
     };
 
     const updateMyDateForm = () => {
@@ -79,6 +80,18 @@ export default function MyDatesComponents({ currentMoment }: { currentMoment: mo
     useEffect(() => {
         getAllMyDates();
     }, []);
+
+    useEffect(() => {
+        if (newMyDateAdded) {
+            getAllMyDates();
+            setNewMyDateAdded(false);
+            console.log("getallmydates");
+
+        }
+        console.log(newMyDateAdded);
+
+    }, [newMyDateAdded]);
+
 
     return (
         <>

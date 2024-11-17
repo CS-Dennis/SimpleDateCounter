@@ -24,12 +24,14 @@ export default function Home() {
   // my date object
   const [dateTitle, setDateTitle] = useState("");
   const [selectedDate, setSelectedDate] = useState(getDateMoment(moment()));
+  const [newMyDateAdded, setNewMyDateAdded] = useState<boolean>(false);
 
   const [tab, setTab] = useState(1);
 
   const resetModalForm = () => {
     setDateTitle("");
     setSelectedDate(getDateMoment(moment()));
+    setNewMyDateAdded(false);
   };
 
   const saveDate = () => {
@@ -42,7 +44,8 @@ export default function Home() {
     };
 
     saveMyDate(newMyDate);
-
+    setShowModal(false);
+    setNewMyDateAdded(true);
   };
 
   const toggleTheme = () => {
@@ -119,7 +122,7 @@ export default function Home() {
             {
               tab === 1 &&
               <Box className="mt-4">
-                <MyDatesComponents currentMoment={currentMoment} />
+                <MyDatesComponents currentMoment={currentMoment} newMyDateAdded={newMyDateAdded} setNewMyDateAdded={setNewMyDateAdded} />
               </Box>
             }
           </Box>
