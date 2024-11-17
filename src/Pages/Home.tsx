@@ -26,7 +26,7 @@ export default function Home() {
   const [selectedDate, setSelectedDate] = useState(getDateMoment(moment()));
   const [newMyDateAdded, setNewMyDateAdded] = useState<boolean>(false);
 
-  const [tab, setTab] = useState(1);
+  const [tab, setTab] = useState(0);
 
   const resetModalForm = () => {
     setDateTitle("");
@@ -71,7 +71,7 @@ export default function Home() {
         <Grid size={{ xs: 12, md: 'grow', lg: 1 }}></Grid>
         <Grid size={{ xs: 12, md: 11, lg: 10 }}>
           <Box className='min-h-screen pb-10'>
-            <Box className={`flex place-content-between fixed m-auto top-0 left-0 right-0 w-full z-50 ${context.appTheme.matrixTheme ? 'bg-matrix_dark' : 'white'}`}>
+            <Box className={`flex place-content-between fixed m-auto top-0 left-0 right-0 w-full z-50 ${context.appTheme.matrixTheme ? 'bg-matrix_dark' : 'bg-white'}`}>
               <Box className="ml-10">
                 <Box className='font-bold text-lg'>
                   {context.appTheme.matrixTheme
