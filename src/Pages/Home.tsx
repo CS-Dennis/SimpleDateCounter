@@ -134,9 +134,9 @@ export default function Home() {
         open={showModal}
         onClose={() => setShowModal(false)}
       >
-        <Box className="absolute m-auto left-0 top-0 bottom-0 right-0 w-10/12 min-h-fit bg-matrix_green text-matrix_white_green">
+        <Box className={`absolute m-auto left-0 top-0 bottom-0 right-0 w-10/12 min-h-fit ${context.appTheme.matrixTheme ? 'bg-matrix_green' : 'bg-matrix_white_green'} ${context.appTheme.matrixTheme ? 'text-matrix_white_green' : 'text-matrix_dark'}`}>
           <Box className="p-4">
-            <Box className="text-matrix_jade_green flex justify-center font-bold">
+            <Box className={`flex justify-center font-bold ${context.appTheme.matrixTheme ? 'text-matrix_jade_green' : 'text-matrix_dark'}`}>
               Add A New Date
             </Box>
             <Box className="mt-4">

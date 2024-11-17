@@ -1,11 +1,12 @@
 import { Box, Button, Grid2 as Grid, Modal, TextField } from '@mui/material';
 import DateCardComponent from './DateCardComponent';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { localStorageKeys } from '../Utils/Constants';
 import moment from 'moment';
 import { deleteMyDate, getDateMoment, getMyDateByKey, updateMyDate } from '../Utils/Utils';
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { AppContext } from '../App';
 
 export default function MyDatesComponents({ currentMoment, newMyDateAdded, setNewMyDateAdded }:
     {
@@ -14,6 +15,8 @@ export default function MyDatesComponents({ currentMoment, newMyDateAdded, setNe
         setNewMyDateAdded: (newMyDateAdded: boolean) => void;
     }
 ) {
+    const context = useContext(AppContext);
+
     const [allMyDates, setAllMyDates] = useState<any>({});
     const [dateKeys, setDateKeys] = useState<string[]>([]);
 
@@ -36,7 +39,7 @@ export default function MyDatesComponents({ currentMoment, newMyDateAdded, setNe
     const openUpdateModal = (myDateKey: string) => {
         setSelectedMyDateKey(myDateKey);
         setSelectedMyDate(getMyDateByKey(myDateKey));
-        console.log(getMyDateByKey(myDateKey));
+        // console.log(getMyDateByKey(myDateKey));
         setShowModal(true);
     };
 
@@ -64,7 +67,7 @@ export default function MyDatesComponents({ currentMoment, newMyDateAdded, setNe
     };
 
     const deleteMyDateOnForm = () => {
-        console.log(selectedMyDateKey);
+        // console.log(selectedMyDateKey);
         deleteMyDate(selectedMyDateKey);
         getAllMyDates();
         setShowModal(false);
@@ -85,11 +88,8 @@ export default function MyDatesComponents({ currentMoment, newMyDateAdded, setNe
         if (newMyDateAdded) {
             getAllMyDates();
             setNewMyDateAdded(false);
-            console.log("getallmydates");
 
         }
-        console.log(newMyDateAdded);
-
     }, [newMyDateAdded]);
 
 
@@ -117,12 +117,15 @@ export default function MyDatesComponents({ currentMoment, newMyDateAdded, setNe
                 open={showModal}
                 onClose={() => setShowModal(false)}
             >
-                <Box className='absolute m-auto left-0 top-0 bottom-0 right-0 w-10/12 min-h-fit bg-matrix_green text-matrix_white_green'>
+                <Box className={
+                    `absolute m-auto left-0 top-0 bottom-0 right-0 w-10/12 min-h-fit 
+                    ${context.appTheme.matrixTheme ? 'bg-matrix_green' : 'bg-matrix_white_green'}`}>
                     <Box className='p-4'>
                         {selectedMyDate && selectedMyDateKey !== "" &&
                             <>
-                                <Box className='text-lg text-matrix_jade_green flex justify-center font-bold'>
-                                    Update My Date<br />{selectedMyDateKey}
+                                <Box className={`text-lg flex justify-center font-bold
+                                    ${context.appTheme.matrixTheme ? 'text-matrix_white_green' : 'text-matrix_dark'}`}>
+                                    Update My Date
                                 </Box>
                                 <Box className='mt-4'>
                                     <TextField
