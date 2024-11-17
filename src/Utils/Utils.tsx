@@ -48,15 +48,8 @@ export const getDateMoment = (currentMoment: moment.Moment) => {
 // }
 
 export const saveMyDate = (myDate: MyDate) => {
-  console.log(myDate);
-  console.log(moment("2024-11-16", "YYYY-MM-DD"));
-  const nov16 = moment("2024-11-16", "YYYY-MM-DD");
-  console.log(moment().diff(nov16, "hours"));
-
-
-
   const uuid = uuidv4();
-  console.log(uuid);
+  // console.log(uuid);
   var currentMyDates = JSON.parse(localStorage.getItem(localStorageKeys.myDates) || "{}");
 
   var withNewMyDate = { ...currentMyDates, [uuid]: { ...myDate } };
