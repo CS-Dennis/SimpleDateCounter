@@ -94,7 +94,7 @@ export default function Home() {
               </Box>
             </Box>
 
-            <Box className='flex justify-center mt-10'>
+            <Box className='flex justify-center' sx={{ marginTop: '70px' }}>
               <DateComponent currentMoment={currentMoment} />
             </Box>
             <Box className='flex justify-center'>
