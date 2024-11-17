@@ -68,8 +68,8 @@ export default function Home() {
         <Grid size={{ xs: 12, md: 'grow', lg: 1 }}></Grid>
         <Grid size={{ xs: 12, md: 11, lg: 10 }}>
           <Box className='min-h-screen pb-10'>
-            <Box className="flex place-content-between">
-              <Box>
+            <Box className="flex place-content-between fixed m-auto top-0 left-0 right-0 w-full bg-matrix_dark z-50">
+              <Box className="ml-10">
                 <Box className='font-bold text-lg'>
                   {context.appTheme.matrixTheme
                     ? "Theme: Matrix"
@@ -81,7 +81,7 @@ export default function Home() {
                 />
               </Box>
 
-              <Box className="self-center">
+              <Box className="self-center mr-4">
                 <Button variant="contained" onClick={() => { setShowModal(true); resetModalForm(); }} >Add My Date</Button>
                 <Tooltip className="ml-1" title={
                   <Box className="whitespace-break-spaces">{constants.addDateButtonHelpText}</Box>

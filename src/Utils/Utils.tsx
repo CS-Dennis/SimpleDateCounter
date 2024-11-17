@@ -64,3 +64,16 @@ export const saveMyDate = (myDate: MyDate) => {
   localStorage.setItem(localStorageKeys.myDates, JSON.stringify(withNewMyDate));
 
 };
+
+export const getMyDateByKey = (key: string) => {
+  const myDate = JSON.parse(localStorage.getItem(localStorageKeys.myDates) || "{}")[key];
+  return { [key]: myDate };
+};
+
+export const updateMyDate = (myDateKey: string, myDate: MyDate) => {
+  var currentMyDates = JSON.parse(localStorage.getItem(localStorageKeys.myDates) || "{}");
+
+  currentMyDates = { ...currentMyDates, [myDateKey]: myDate };
+
+  localStorage.setItem(localStorageKeys.myDates, JSON.stringify(currentMyDates));
+};
