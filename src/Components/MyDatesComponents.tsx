@@ -3,7 +3,7 @@ import DateCardComponent from './DateCardComponent';
 import { useEffect, useState } from 'react';
 import { localStorageKeys } from '../Utils/Constants';
 import moment from 'moment';
-import { getDateMoment, getMyDateByKey, updateMyDate } from '../Utils/Utils';
+import { deleteMyDate, getDateMoment, getMyDateByKey, updateMyDate } from '../Utils/Utils';
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
@@ -62,9 +62,17 @@ export default function MyDatesComponents({ currentMoment }: { currentMoment: mo
         setShowModal(false);
     };
 
+    const deleteMyDateOnForm = () => {
+        console.log(selectedMyDateKey);
+        deleteMyDate(selectedMyDateKey);
+        getAllMyDates();
+        setShowModal(false);
+    };
+
     const resetMyDateForm = () => {
         setUpdatedDateTilte(null);
         setUpdatedDate(null);
+        setSelectedMyDateKey("");
         setShowModal(false);
     };
 
@@ -89,7 +97,6 @@ export default function MyDatesComponents({ currentMoment }: { currentMoment: mo
                         </Grid>
                     )
                 }
-
             </Grid>
 
             {/* Update MyDate Form */}
@@ -99,7 +106,7 @@ export default function MyDatesComponents({ currentMoment }: { currentMoment: mo
             >
                 <Box className='absolute m-auto left-0 top-0 bottom-0 right-0 w-10/12 min-h-fit bg-matrix_green text-matrix_white_green'>
                     <Box className='p-4'>
-                        {selectedMyDate &&
+                        {selectedMyDate && selectedMyDateKey !== "" &&
                             <>
                                 <Box className='text-lg text-matrix_jade_green flex justify-center font-bold'>
                                     Update My Date<br />{selectedMyDateKey}
@@ -130,9 +137,14 @@ export default function MyDatesComponents({ currentMoment }: { currentMoment: mo
                                     </LocalizationProvider>
                                 </Box>
 
-                                <Box className='mt-4 flex justify-end'>
-                                    <Button variant='contained' sx={{ marginRight: "2em" }} onClick={() => resetMyDateForm()}>Cancel</Button>
-                                    <Button variant='contained' disabled={!formChanged ? true : false} onClick={() => updateMyDateForm()}>Update</Button>
+                                <Box className='mt-4 flex justify-between'>
+                                    <Box>
+                                        <Button variant='contained' color='error' onClick={() => deleteMyDateOnForm()}>Delete</Button>
+                                    </Box>
+                                    <Box className='flex justify-end'>
+                                        <Button variant='contained' sx={{ marginRight: "2em" }} onClick={() => resetMyDateForm()}>Cancel</Button>
+                                        <Button variant='contained' disabled={!formChanged ? true : false} onClick={() => updateMyDateForm()}>Update</Button>
+                                    </Box>
                                 </Box>
                             </>
                         }

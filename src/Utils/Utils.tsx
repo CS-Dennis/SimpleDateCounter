@@ -77,3 +77,17 @@ export const updateMyDate = (myDateKey: string, myDate: MyDate) => {
 
   localStorage.setItem(localStorageKeys.myDates, JSON.stringify(currentMyDates));
 };
+
+export const deleteMyDate = (myDateKey: string) => {
+  var currentMyDates = JSON.parse(localStorage.getItem(localStorageKeys.myDates) || "{}");
+  var keys = Object.keys(currentMyDates);
+
+  var newMyDates = {};
+  keys.forEach(key => {
+    if (key !== myDateKey) {
+      newMyDates = { ...newMyDates, [key]: currentMyDates[key] };
+    }
+  });
+
+  localStorage.setItem(localStorageKeys.myDates, JSON.stringify(newMyDates));
+};
