@@ -1,55 +1,19 @@
-<<<<<<< HEAD
-# SimpleDateCounter
-Simple Date Counter
-=======
-# React + TypeScript + Vite
+# Simple Date Counter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 1. Date Component
 
-Currently, two official plugins are available:
+## 2. Time Component
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 3. TimeZone Component
 
-## Expanding the ESLint configuration
+## 4. Date Counter Component
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## 5. Date Card Component
 
-- Configure the top-level `parserOptions` property like this:
+## New Features to Add:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### 1. Export MyDates
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 2. Import MyDates
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
->>>>>>> 9555b04 (init)
+### Dim the past MyDates

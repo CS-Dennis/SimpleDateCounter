@@ -22,7 +22,8 @@ export default function DateCardComponent({
           (context.appTheme.matrixTheme
             ? `date-card-dark-theme `
             : `date-card-light-theme `) +
-          `border-solid border-2 border-matrix_light_green p-4 mx-2 mb-2 flex flex-col justify-center items-center min-h-44 cursor-pointer`
+          `border-solid border-2 border-matrix_light_green p-4 mx-2 mb-2 flex flex-col justify-center items-center min-h-44 cursor-pointer ` +
+          (nextMoment.diff(currentMoment, 'hours') < 0 ? (context.appTheme.matrixTheme ? "text-matrix_light_green" : "bg-matrix_light_green") : "")
         }
       >
         <Box className="dateCardTitle text-center" sx={{ fontSize: '2rem' }}>{dateName}</Box>

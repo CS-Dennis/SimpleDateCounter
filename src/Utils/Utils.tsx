@@ -26,8 +26,7 @@ export const getStringBetweenMoments = (
   const days = Math.floor(totalHours / 24);
   const hours = totalHours - days * 24;
 
-  return `${negative ? `-` : ``} ${days !== 0 ? days : ``} ${days == 0 ? `` : (days > 1 ? "days" : "day")} ${hours} ${hours > 1 ? "hours" : "hour"
-    }`;
+  return `${days !== 0 ? days : ``} ${days == 0 ? `` : (days > 1 ? "days" : "day")} ${hours} ${hours > 1 ? "hours" : "hour"} ${negative ? `ago` : ``} `;
 };
 
 // get the the moment object at 00:00:00 
