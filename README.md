@@ -10,10 +10,12 @@
 
 ## 5. Date Card Component
 
-## New Features to Add:
+## Features to Add:
 
 ### 1. Export MyDates
 
 ### 2. Import MyDates
 
-### Dim the past MyDates
+### Dim the past MyDates (Released)
+
+### Sort MyDates by modified (created) or date
