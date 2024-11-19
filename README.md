@@ -16,8 +16,10 @@
 
 ### 2. Import MyDates
 
-### Dim the past MyDates (Released)
+### 3. Dim the past MyDates (Released)
 
-### Sort MyDates by modified (created) or date
+### 4. Sort MyDates by modified (created) or date
+
+### 5. Clear all MyDates
 
 ### Add author section

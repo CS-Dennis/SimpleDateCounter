@@ -24,7 +24,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { getDateMoment, saveMyDate } from '../Utils/Utils';
 import { MyDate } from '../Types/MyDate';
 import MyDatesComponents from '../Components/MyDatesComponents';
-import ExportButton from '../Components/ExportButton';
+import ExportImportButton from '../Components/ExportImportButton';
 
 export default function Home() {
   const context = useContext(AppContext);
@@ -101,7 +101,7 @@ export default function Home() {
 
               <Box className='self-center mr-4 flex'>
                 <Box className='mr-4'>
-                  <ExportButton />
+                  <ExportImportButton />
                 </Box>
 
                 <Button
