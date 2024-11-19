@@ -19,3 +19,5 @@
 ### Dim the past MyDates (Released)
 
 ### Sort MyDates by modified (created) or date
+
+### Add author section
