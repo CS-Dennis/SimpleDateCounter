@@ -126,7 +126,7 @@ export default function Home() {
               </Box>
             </Box>
 
-            <Box className='flex justify-center' sx={{ marginTop: '70px' }}>
+            <Box className='flex justify-center' sx={{ marginTop: '96px' }}>
               <DateComponent currentMoment={currentMoment} />
             </Box>
             <Box className='flex justify-center'>
