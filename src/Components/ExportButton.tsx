@@ -1,7 +1,18 @@
-import { Button } from '@mui/material';
+import {
+  Button,
+  ButtonGroup,
+  ClickAwayListener,
+  Grow,
+  MenuItem,
+  MenuList,
+  Paper,
+  Popper,
+} from '@mui/material';
 import { exportHeaders, localStorageKeys } from '../Utils/Constants';
 import { getDateMoment } from '../Utils/Utils';
 import moment from 'moment';
+import { useRef, useState } from 'react';
+import { ArrowDropDownIcon } from '@mui/x-date-pickers';
 
 export default function ExportButton() {
   const exportMyDates = () => {
@@ -45,11 +56,92 @@ export default function ExportButton() {
     }
   };
 
+  const importMyDates = () => {
+    console.log('import dates start');
+  };
+
+  const anchorRef = useRef<HTMLDivElement>(null);
+  const options = ['Export Dates', 'Import Dates'];
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(options[0]);
+
+  const selectedOptionClicked = () => {
+    console.log(selectedOption);
+
+    if (selectedOption === options[0]) {
+      exportMyDates();
+    } else if (selectedOption === options[1]) {
+      importMyDates();
+    }
+  };
+
+  const dropdownOptionClicked = (index: number) => {
+    setSelectedOption(options[index]);
+    console.log(options[index]);
+
+    if (index === 0) {
+      exportMyDates();
+    } else if (index === 1) {
+      importMyDates();
+    }
+  };
+
   return (
     <>
-      <Button variant='contained' onClick={() => exportMyDates()}>
-        Export Dates
-      </Button>
+      <ButtonGroup
+        variant='contained'
+        ref={anchorRef}
+        aria-label='Button group with a nested menu'
+      >
+        <Button onClick={() => selectedOptionClicked()}>
+          {selectedOption}
+        </Button>
+        <Button
+          size='small'
+          aria-label='select merge strategy'
+          aria-haspopup='menu'
+          onClick={() => setShowDropdown(!showDropdown)}
+        >
+          <ArrowDropDownIcon />
+        </Button>
+      </ButtonGroup>
+      <Popper
+        sx={{ zIndex: 1, width: '188px' }}
+        open={showDropdown}
+        anchorEl={anchorRef.current}
+        role={undefined}
+        transition
+        disablePortal
+      >
+        {({ TransitionProps, placement }) => (
+          <Grow
+            {...TransitionProps}
+            style={{
+              transformOrigin:
+                placement === 'bottom' ? 'center top' : 'center bottom',
+            }}
+          >
+            <Paper>
+              <ClickAwayListener onClickAway={() => setShowDropdown(false)}>
+                <MenuList id='split-button-menu' autoFocusItem>
+                  {options.map((option, index) => (
+                    <MenuItem
+                      key={option}
+                      onClick={() => {
+                        setShowDropdown(false);
+                        dropdownOptionClicked(index);
+                      }}
+                      disabled={index === 1 ? true : false}
+                    >
+                      {option}
+                    </MenuItem>
+                  ))}
+                </MenuList>
+              </ClickAwayListener>
+            </Paper>
+          </Grow>
+        )}
+      </Popper>
     </>
   );
 }

@@ -12,7 +12,7 @@
 
 ## Features to Add:
 
-### 1. Export MyDates
+### 1. Export MyDates (Released)
 
 ### 2. Import MyDates
 
