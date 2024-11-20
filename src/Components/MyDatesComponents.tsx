@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import DateCardComponent from './DateCardComponent';
 import { useContext, useEffect, useState } from 'react';
-import { constants, localStorageKeys } from '../Utils/Constants';
+import { localStorageKeys } from '../Utils/Constants';
 import moment from 'moment';
 import {
   deleteMyDate,
