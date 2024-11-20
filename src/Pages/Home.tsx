@@ -37,7 +37,7 @@ export default function Home() {
   const [selectedDate, setSelectedDate] = useState(getDateMoment(moment()));
   const [newMyDateAdded, setNewMyDateAdded] = useState<boolean>(false);
 
-  const [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(1);
 
   const resetModalForm = () => {
     setDateTitle('');

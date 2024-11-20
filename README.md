@@ -14,12 +14,12 @@
 
 ### 1. Export MyDates (Released)
 
-### 2. Import MyDates
+### 2. Import MyDates (Released)
 
 ### 3. Dim the past MyDates (Released)
 
 ### 4. Sort MyDates by modified (created) or date
 
-### 5. Clear all MyDates
+### 5. Clear all MyDates (Released)
 
 ### Add author section
