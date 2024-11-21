@@ -25,6 +25,7 @@ import { getDateMoment, saveMyDate } from '../Utils/Utils';
 import { MyDate } from '../Types/MyDate';
 import MyDatesComponents from '../Components/MyDatesComponents';
 import ExportImportButton from '../Components/ExportImportButton';
+import AuthorComponent from '../Components/AuthorComponent';
 
 export default function Home() {
   const context = useContext(AppContext);
@@ -126,7 +127,11 @@ export default function Home() {
               </Box>
             </Box>
 
-            <Box className='flex justify-center' sx={{ marginTop: '96px' }}>
+            <Box sx={{ marginTop: '96px' }}>
+              <AuthorComponent />
+            </Box>
+
+            <Box className='flex justify-center'>
               <DateComponent currentMoment={currentMoment} />
             </Box>
             <Box className='flex justify-center'>

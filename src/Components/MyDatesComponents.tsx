@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  ButtonGroup,
   Grid2 as Grid,
   IconButton,
   Modal,
@@ -20,6 +21,7 @@ import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { AppContext } from '../App';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { v4 as uuidv4 } from 'uuid';
 
 export default function MyDatesComponents({
   currentMoment,
@@ -107,6 +109,34 @@ export default function MyDatesComponents({
     getAllMyDates();
   };
 
+  const sortMyDates = (type: string) => {
+    const myDates = JSON.parse(
+      localStorage.getItem(localStorageKeys.myDates) || ''
+    );
+    const keys = Object.keys(myDates);
+
+    var myDatesList = keys.map((key) => myDates[key]);
+
+    if (type === 'asc') {
+      myDatesList = myDatesList.sort(
+        (a, b) => moment(a.date).valueOf() - moment(b.date).valueOf()
+      );
+    } else if (type === 'desc') {
+      myDatesList = myDatesList.sort(
+        (a, b) => moment(b.date).valueOf() - moment(a.date).valueOf()
+      );
+    }
+
+    const newMyDates: any = {};
+    myDatesList.forEach((myDate) => {
+      const uuid = uuidv4();
+      newMyDates[uuid] = myDate;
+    });
+
+    localStorage.setItem(localStorageKeys.myDates, JSON.stringify(newMyDates));
+    getAllMyDates();
+  };
+
   useEffect(() => {
     getAllMyDates();
   }, []);
@@ -127,12 +157,20 @@ export default function MyDatesComponents({
 
   return (
     <>
-      <Box className='font-bold text-3xl mb-2 flex justify-center'>
-        <Box>My Dates</Box>
-        <Box className='absolute right-0 mr-10'>
-          <IconButton color='primary' onClick={() => setShowClearModal(true)}>
-            <DeleteForeverIcon />
-          </IconButton>
+      <Box className='font-bold text-3xl mb-2 justify-center'>
+        <Box className='flex justify-center'>My Dates</Box>
+        <Box className='flex justify-between'>
+          <Box className='ml-2'>
+            <ButtonGroup variant='outlined' aria-label='Basic button group'>
+              <Button onClick={() => sortMyDates('asc')}>Asc</Button>
+              <Button onClick={() => sortMyDates('desc')}>Desc</Button>
+            </ButtonGroup>
+          </Box>
+          <Box>
+            <IconButton color='primary' onClick={() => setShowClearModal(true)}>
+              <DeleteForeverIcon />
+            </IconButton>
+          </Box>
         </Box>
       </Box>
       <Grid container>

@@ -22,3 +22,9 @@ export const localStorageKeys = {
 };
 
 export const exportHeaders = ['Date Tilte', 'date', 'created', 'modified'];
+
+export const appDescription =
+  'Please feel free to support or send suggestions to the app developer:';
+export const email = 'ynyz2003@gmail.com';
+export const linkedin = 'https://www.linkedin.com/in/nanyecs/';
+export const version = ['0.1'];
