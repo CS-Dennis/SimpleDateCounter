@@ -1,21 +1,14 @@
-import ClockComponent from '../Components/ClockComponent';
-import DateComponent from '../Components/DateComponent';
 import {
   Box,
   Button,
   Grid2 as Grid,
   Modal,
   Switch,
-  Tab,
-  Tabs,
   TextField,
   Tooltip,
 } from '@mui/material';
 import moment from 'moment';
-import { useContext, useEffect, useState } from 'react';
-import TimeZoneComponent from '../Components/TimeZoneComponent';
-import DateCounterComponent from '../Components/DateCounterComponent';
-import HolidaysComponent from '../Components/HolidaysComponent';
+import { useContext, useState } from 'react';
 import { AppContext } from '../App';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { constants } from '../Utils/Constants';
@@ -23,22 +16,20 @@ import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { getDateMoment, saveMyDate } from '../Utils/Utils';
 import { MyDate } from '../Types/MyDate';
-import MyDatesComponents from '../Components/MyDatesComponents';
 import ExportImportButton from '../Components/ExportImportButton';
 import AuthorComponent from '../Components/AuthorComponent';
+import DateClockGroupComponent from '../Components/DateClockGroupComponent';
+import LoginForm from '../Components/LoginForm';
 
 export default function Home() {
   const context = useContext(AppContext);
 
-  const [currentMoment, setCurrentMoment] = useState<moment.Moment>(moment());
   const [showModal, setShowModal] = useState(false);
 
   // my date object
   const [dateTitle, setDateTitle] = useState('');
   const [selectedDate, setSelectedDate] = useState(getDateMoment(moment()));
   const [newMyDateAdded, setNewMyDateAdded] = useState<boolean>(false);
-
-  const [tab, setTab] = useState(1);
 
   const resetModalForm = () => {
     setDateTitle('');
@@ -67,12 +58,6 @@ export default function Home() {
     });
     localStorage.setItem('matrixTheme', newTheme.toString());
   };
-
-  useEffect(() => {
-    setInterval(() => {
-      setCurrentMoment(moment());
-    }, 1000);
-  }, []);
 
   return (
     <>
@@ -127,44 +112,20 @@ export default function Home() {
               </Box>
             </Box>
 
-            <Box sx={{ marginTop: '96px' }}>
+            <Box
+              sx={{ marginTop: '96px' }}
+              className='flex justify-between mx-10'
+            >
               <AuthorComponent />
+              <LoginForm />
             </Box>
 
-            <Box className='flex justify-center'>
-              <DateComponent currentMoment={currentMoment} />
-            </Box>
-            <Box className='flex justify-center'>
-              <ClockComponent currentMoment={currentMoment} />
-            </Box>
             <Box>
-              <TimeZoneComponent currentMoment={currentMoment} />
+              <DateClockGroupComponent
+                newMyDateAdded={newMyDateAdded}
+                setNewMyDateAdded={setNewMyDateAdded}
+              />
             </Box>
-
-            <Box className='mt-10'>
-              <DateCounterComponent />
-            </Box>
-
-            <Tabs value={tab} onChange={(_e, value) => setTab(value)} centered>
-              <Tab label='Holidays' />
-              <Tab label='My Dates' />
-            </Tabs>
-
-            {tab === 0 && (
-              <Box className='mt-4'>
-                <HolidaysComponent currentMoment={currentMoment} />
-              </Box>
-            )}
-
-            {tab === 1 && (
-              <Box className='mt-4'>
-                <MyDatesComponents
-                  currentMoment={currentMoment}
-                  newMyDateAdded={newMyDateAdded}
-                  setNewMyDateAdded={setNewMyDateAdded}
-                />
-              </Box>
-            )}
           </Box>
         </Grid>
         <Grid size={{ xs: 12, md: 'grow', lg: 1 }}></Grid>

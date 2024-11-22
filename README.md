@@ -22,4 +22,8 @@
 
 ### 5. Clear all MyDates (Released)
 
-### Add author section
+### 6. Implement Supabase
+
+i. Add DB and login to allow users to store dates online
+
+### Add author section (Added)
