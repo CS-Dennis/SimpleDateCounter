@@ -123,9 +123,25 @@ export default function MyDatesComponents({
     setShowEditModal(false);
   };
 
-  const deleteMyDateOnForm = () => {
-    deleteMyDate(selectedMyDateKey);
-    getAllMyDates();
+  const deleteMyDateOnForm = async () => {
+    // if online
+    if (context.session?.access_token) {
+      console.log('selectedMyDateKey', selectedMyDateKey);
+      console.log('selectedMyDate', selectedMyDate);
+      const { error, status } = await supabase_client
+        .from('MyDates')
+        .delete()
+        .eq('id', selectedMyDateKey);
+      if (env === 'dev') {
+        console.log('error', error, status);
+      }
+      getAllMyDatesOnline();
+    }
+    // if offline
+    else {
+      deleteMyDate(selectedMyDateKey);
+      getAllMyDates();
+    }
     setShowEditModal(false);
   };
 
