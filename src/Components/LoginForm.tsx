@@ -19,7 +19,7 @@ export default function LoginForm() {
     <>
       {context.session === null && (
         <Button
-          variant='contained'
+          variant='outlined'
           sx={{ textTransform: 'capitalize' }}
           onClick={() => setShowLoginForm(true)}
         >

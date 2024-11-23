@@ -21,8 +21,41 @@ function App() {
 
   // save the session if user is logged in with supabase
   const [session, setSession] = useState<any>(null);
+  const [authComplete, setAuthComplete] = useState(false);
+
+  const userAuth = async () => {
+    await supabase_client.auth
+      .getSession()
+      .then(({ data: { session }, error }) => {
+        setSession(session);
+        if (session !== null) {
+          console.log('logged in');
+        }
+
+        if (error) {
+          console.log(error);
+        }
+        if (env === 'dev') {
+          console.log(session);
+        }
+      });
+
+    const {
+      data: { subscription },
+    } = await supabase_client.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+      if (env === 'dev') {
+        console.log(session, 'changed');
+      }
+    });
+
+    setAuthComplete(true);
+    return () => subscription.unsubscribe();
+  };
 
   useEffect(() => {
+    userAuth();
+
     const isMatrixTheme = localStorage.getItem('matrixTheme');
     if (isMatrixTheme === null) {
       localStorage.setItem('matrixTheme', 'true');
@@ -31,36 +64,13 @@ function App() {
     } else {
       setAppTheme({ matrixTheme: false });
     }
-
-    supabase_client.auth.getSession().then(({ data: { session }, error }) => {
-      setSession(session);
-      if (session !== null) {
-        console.log('logged in');
-      }
-
-      if (error) {
-        console.log(error);
-      }
-      if (env === 'dev') {
-        console.log(session);
-      }
-    });
-
-    const {
-      data: { subscription },
-    } = supabase_client.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      if (env === 'dev') {
-        console.log(session, 'changed');
-      }
-    });
-    return () => subscription.unsubscribe();
   }, []);
 
   return (
     <>
       <AppContext.Provider
         value={{
+          authComplete,
           session,
           appTheme,
           setAppTheme,

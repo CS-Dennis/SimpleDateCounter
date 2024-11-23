@@ -19,9 +19,10 @@ import {
 } from '../Utils/Utils';
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { AppContext } from '../App';
+import { AppContext, supabase_client } from '../App';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { v4 as uuidv4 } from 'uuid';
+import { jwtDecode } from 'jwt-decode';
 
 export default function MyDatesComponents({
   currentMoment,
@@ -47,10 +48,12 @@ export default function MyDatesComponents({
   const [updatedDateTilte, setUpdatedDateTilte] = useState<string | null>(null);
   const [updatedDate, setUpdatedDate] = useState<moment.Moment | null>(null);
 
-  const getAllMyDates = () => {
+  const getAllMyDates = async () => {
     const allDates = JSON.parse(
       localStorage.getItem(localStorageKeys.myDates) || '{}'
     );
+    console.log('all', allDates);
+
     setAllMyDates(allDates);
     setDateKeys(Object.keys(allDates));
     // console.log(allDates);
@@ -137,14 +140,46 @@ export default function MyDatesComponents({
     getAllMyDates();
   };
 
+  // operations for logged in users
+  const getMyDatesOnline = async () => {
+    const { data } = await supabase_client.from('MyDates').select();
+    setAllMyDates(data);
+    setDateKeys(Object.keys(data || ''));
+    console.log('data', data);
+  };
+
+  const insertMyDatesOnline = async () => {
+    const userId = jwtDecode(context.session.access_token).sub;
+    const a = await supabase_client
+      .from('MyDates')
+      .insert({
+        date: moment().toISOString(),
+        dateTitle: 'test',
+        user_id: userId,
+        modified: moment().toISOString(),
+      })
+      .select();
+    console.log(a.data);
+    console.log(a.error);
+    setNewMyDateAdded(true);
+  };
+
   useEffect(() => {
-    getAllMyDates();
-  }, []);
+    // if offline
+    if (context.session?.access_token === undefined) {
+      getAllMyDates();
+    } else {
+      // if logged in
+      getMyDatesOnline();
+    }
+    console.log('context.session');
+  }, [context.session?.access_token]);
 
   useEffect(() => {
     if (newMyDateAdded) {
       getAllMyDates();
       setNewMyDateAdded(false);
+      console.log('newMyDateAdded');
     }
   }, [newMyDateAdded]);
 
@@ -152,6 +187,7 @@ export default function MyDatesComponents({
     if (context.myDatesUpdated) {
       getAllMyDates();
       context.setMyDatesUpdated(false);
+      console.log('context.myDatesUpdated');
     }
   }, [context.myDatesUpdated]);
 
