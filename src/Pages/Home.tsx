@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import { useContext, useState } from 'react';
-import { AppContext } from '../App';
+import { AppContext, supabase_client } from '../App';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { constants } from '../Utils/Constants';
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
@@ -25,6 +25,7 @@ import LoginForm from '../Components/LoginForm';
 import LoadingComponent from '../Components/LoadingComponent';
 import HolidaysComponent from '../Components/HolidaysComponent';
 import MyDatesComponents from '../Components/MyDatesComponents';
+import { jwtDecode } from 'jwt-decode';
 
 export default function Home() {
   const context = useContext(AppContext);
@@ -43,7 +44,7 @@ export default function Home() {
     setNewMyDateAdded(false);
   };
 
-  const saveDate = () => {
+  const saveDate = async () => {
     // saveMyDate();
     const newMyDate: MyDate = {
       date: selectedDate,
@@ -52,8 +53,32 @@ export default function Home() {
       modified: moment(),
     };
 
-    saveMyDate(newMyDate);
+    if (context.session?.access_token) {
+      await saveDateOnline(newMyDate);
+      console.log('saved date online');
+    } else {
+      saveMyDate(newMyDate);
+    }
     setShowModal(false);
+    setNewMyDateAdded(true);
+  };
+
+  const saveDateOnline = async (newMyData: MyDate) => {
+    const userId = jwtDecode(context.session.access_token).sub;
+    const savedDate = await supabase_client
+      .from('MyDates')
+      .insert({
+        date: newMyData.date.toISOString(),
+        dateTitle: newMyData.dateTitle,
+        user_id: userId,
+        created_at: newMyData.created.toISOString(),
+        modified: newMyData.modified.toISOString(),
+      })
+      .select();
+
+    if (savedDate.error) {
+      console.log(savedDate.error);
+    }
     setNewMyDateAdded(true);
   };
 

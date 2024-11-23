@@ -22,7 +22,6 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { AppContext, supabase_client } from '../App';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { v4 as uuidv4 } from 'uuid';
-import { jwtDecode } from 'jwt-decode';
 
 export default function MyDatesComponents({
   currentMoment,
@@ -148,22 +147,6 @@ export default function MyDatesComponents({
     console.log('data', data);
   };
 
-  const insertMyDatesOnline = async () => {
-    const userId = jwtDecode(context.session.access_token).sub;
-    const a = await supabase_client
-      .from('MyDates')
-      .insert({
-        date: moment().toISOString(),
-        dateTitle: 'test',
-        user_id: userId,
-        modified: moment().toISOString(),
-      })
-      .select();
-    console.log(a.data);
-    console.log(a.error);
-    setNewMyDateAdded(true);
-  };
-
   useEffect(() => {
     // if offline
     if (context.session?.access_token === undefined) {
@@ -176,18 +159,26 @@ export default function MyDatesComponents({
   }, [context.session?.access_token]);
 
   useEffect(() => {
-    if (newMyDateAdded) {
+    // if offline
+    if (newMyDateAdded && context.session?.access_token === undefined) {
       getAllMyDates();
       setNewMyDateAdded(false);
       console.log('newMyDateAdded');
+    } else {
+      // if logged in
+      getMyDatesOnline();
     }
   }, [newMyDateAdded]);
 
   useEffect(() => {
-    if (context.myDatesUpdated) {
+    // if offline
+    if (context.myDatesUpdated && context.session?.access_token === undefined) {
       getAllMyDates();
       context.setMyDatesUpdated(false);
       console.log('context.myDatesUpdated');
+    } else {
+      // if logged in
+      getMyDatesOnline();
     }
   }, [context.myDatesUpdated]);
 
