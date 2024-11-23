@@ -28,13 +28,18 @@ export default function LoginForm() {
       )}
 
       {context.session !== null && (
-        <Button
-          variant='outlined'
-          sx={{ textTransform: 'capitalize' }}
-          onClick={() => logout()}
-        >
-          Log out
-        </Button>
+        <Box className='flex items-center'>
+          <Box className='mr-4'>{`Hi, ${context.session?.user.email}`}</Box>
+          <Box>
+            <Button
+              variant='outlined'
+              sx={{ textTransform: 'capitalize' }}
+              onClick={() => logout()}
+            >
+              Log out
+            </Button>
+          </Box>
+        </Box>
       )}
 
       {context.session === null && (
