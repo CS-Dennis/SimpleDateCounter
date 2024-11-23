@@ -9,6 +9,10 @@ on:
     branches:
       - main
 
+env:
+  VITE_API_KEY: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR6bXhzeHZrZ3BicWZ3dGZ4dGh0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzIyMTkwNjMsImV4cCI6MjA0Nzc5NTA2M30.9am8f12FUHV0b5UUk6H8c30V0tpg006kHeCjczF9ytY
+  VITE_SERVICE_URL: https://dzmxsxvkgpbqfwtfxtht.supabase.co
+
 jobs:
   build_and_deploy_job:
     if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
