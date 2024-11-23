@@ -19,7 +19,7 @@ import {
 } from '../Utils/Utils';
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
-import { AppContext, supabase_client } from '../App';
+import { AppContext, env, supabase_client } from '../App';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -51,17 +51,31 @@ export default function MyDatesComponents({
     const allDates = JSON.parse(
       localStorage.getItem(localStorageKeys.myDates) || '{}'
     );
-    console.log('all', allDates);
+    if (env === 'dev') {
+      console.log('dev', allDates);
+    }
 
     setAllMyDates(allDates);
     setDateKeys(Object.keys(allDates));
-    // console.log(allDates);
   };
 
   const openUpdateModal = (myDateKey: string) => {
     setSelectedMyDateKey(myDateKey);
-    setSelectedMyDate(getMyDateByKey(myDateKey));
-    // console.log(getMyDateByKey(myDateKey));
+    // if online
+    if (context.session?.access_token) {
+      setSelectedMyDate({
+        [allMyDates[myDateKey].id]: allMyDates[myDateKey],
+      });
+      if (env === 'dev') {
+        console.log('dev', {
+          [allMyDates[myDateKey].id]: allMyDates[myDateKey],
+        });
+      }
+    }
+    // if offline
+    else {
+      setSelectedMyDate(getMyDateByKey(myDateKey));
+    }
     setShowEditModal(true);
   };
 
@@ -71,7 +85,7 @@ export default function MyDatesComponents({
     }
   };
 
-  const updateMyDateForm = () => {
+  const updateMyDateForm = async () => {
     var newMyDate = {
       ...selectedMyDate[selectedMyDateKey],
       modified: moment().toISOString(),
@@ -85,14 +99,31 @@ export default function MyDatesComponents({
       newMyDate = { ...newMyDate, date: updatedDate.toISOString() };
     }
 
-    updateMyDate(selectedMyDateKey, newMyDate);
+    // online
+    if (context.session?.access_token) {
+      const { data, error } = await supabase_client
+        .from('MyDates')
+        .update({ ...newMyDate })
+        .eq('id', selectedMyDateKey)
+        .select();
+      if (error) {
+        console.log(error);
+      }
+      if (env === 'dev') {
+        console.log('dev updated ', data);
+      }
+      getAllMyDatesOnline();
+    }
+    // offline
+    else {
+      updateMyDate(selectedMyDateKey, newMyDate);
+      getAllMyDates();
+    }
 
-    getAllMyDates();
     setShowEditModal(false);
   };
 
   const deleteMyDateOnForm = () => {
-    // console.log(selectedMyDateKey);
     deleteMyDate(selectedMyDateKey);
     getAllMyDates();
     setShowEditModal(false);
@@ -140,17 +171,26 @@ export default function MyDatesComponents({
   };
 
   // operations for logged in users
-  const getMyDatesOnline = async () => {
+  const getAllMyDatesOnline = async () => {
     const { data } = await supabase_client.from('MyDates').select();
-    setAllMyDates(data);
-    setDateKeys(Object.keys(data || ''));
-    console.log('data', data);
+
+    // transforma data format
+    var transformedData: any = {};
+    data?.forEach((row) => {
+      transformedData = { ...transformedData, [row.id]: row };
+    });
+
+    setAllMyDates(transformedData);
+    setDateKeys(Object.keys(transformedData || ''));
+    if (env === 'dev') {
+      console.log('dev data', transformedData);
+    }
   };
 
   useEffect(() => {
     // online
     if (context.session?.access_token) {
-      getMyDatesOnline();
+      getAllMyDatesOnline();
     }
     // offline
     else {
@@ -163,8 +203,6 @@ export default function MyDatesComponents({
         context.setMyDatesUpdated(false);
       }
     }
-
-    console.log('context.session');
   }, [context.session?.access_token, newMyDateAdded, context.myDatesUpdated]);
 
   return (
@@ -200,32 +238,123 @@ export default function MyDatesComponents({
           ))}
       </Grid>
 
-      {/* Update MyDate Form */}
-      <Modal open={showEditModal} onClose={() => setShowEditModal(false)}>
-        <Box
-          className={`absolute m-auto left-0 top-0 bottom-0 right-0 w-10/12 min-h-fit 
+      {/* Update MyDate offline Form */}
+      {!context.session?.access_token && (
+        <Modal open={showEditModal} onClose={() => setShowEditModal(false)}>
+          <Box
+            className={`absolute m-auto left-0 top-0 bottom-0 right-0 w-10/12 min-h-fit 
                     ${
                       context.appTheme.matrixTheme
                         ? 'bg-matrix_green'
                         : 'bg-matrix_white_green'
                     }`}
-        >
-          <Box className='p-4'>
-            {selectedMyDate && selectedMyDateKey !== '' && (
-              <>
-                <Box
-                  className={`text-lg flex justify-center font-bold
+          >
+            <Box className='p-4'>
+              {selectedMyDate && selectedMyDateKey !== '' && (
+                <>
+                  <Box
+                    className={`text-lg flex justify-center font-bold
                                     ${
                                       context.appTheme.matrixTheme
                                         ? 'text-matrix_jade_green'
                                         : 'text-matrix_dark'
                                     }`}
+                  >
+                    Update My Date
+                  </Box>
+                  <Box className='mt-4'>
+                    <TextField
+                      defaultValue={selectedMyDate[selectedMyDateKey].dateTitle}
+                      label='Date Title'
+                      placeholder='Date Title'
+                      className='w-full'
+                      onChange={(e) => {
+                        updatingMyDateForm();
+                        setUpdatedDateTilte(e.target.value);
+                      }}
+                    />
+                  </Box>
+                  <Box className='mt-4'>
+                    <LocalizationProvider dateAdapter={AdapterMoment}>
+                      <MobileDatePicker
+                        className='w-full'
+                        slotProps={{
+                          actionBar: {
+                            actions: ['today', 'accept'],
+                          },
+                        }}
+                        label='Date Picker'
+                        defaultValue={moment(
+                          selectedMyDate[selectedMyDateKey].date
+                        )}
+                        onChange={(e) => {
+                          updatingMyDateForm();
+                          setUpdatedDate(getDateMoment(e || moment()));
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </Box>
+
+                  <Box className='mt-4 flex justify-between'>
+                    <Box>
+                      <Button
+                        variant='contained'
+                        color='error'
+                        onClick={() => deleteMyDateOnForm()}
+                      >
+                        Delete
+                      </Button>
+                    </Box>
+                    <Box className='flex justify-end'>
+                      <Button
+                        variant='contained'
+                        sx={{ marginRight: '2em' }}
+                        onClick={() => resetMyDateForm()}
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        variant='contained'
+                        disabled={!formChanged ? true : false}
+                        onClick={() => updateMyDateForm()}
+                      >
+                        Update
+                      </Button>
+                    </Box>
+                  </Box>
+                </>
+              )}
+            </Box>
+          </Box>
+        </Modal>
+      )}
+
+      {/* update myDate online form */}
+      {context.session?.access_token && (
+        <Modal open={showEditModal} onClose={() => setShowEditModal(false)}>
+          <Box
+            className={`absolute m-auto left-0 top-0 bottom-0 right-0 w-10/12 min-h-fit 
+                  ${
+                    context.appTheme.matrixTheme
+                      ? 'bg-matrix_green'
+                      : 'bg-matrix_white_green'
+                  }`}
+          >
+            <Box className='p-4'>
+              <>
+                <Box
+                  className={`text-lg flex justify-center font-bold
+                                  ${
+                                    context.appTheme.matrixTheme
+                                      ? 'text-matrix_jade_green'
+                                      : 'text-matrix_dark'
+                                  }`}
                 >
                   Update My Date
                 </Box>
                 <Box className='mt-4'>
                   <TextField
-                    defaultValue={selectedMyDate[selectedMyDateKey].dateTitle}
+                    defaultValue={allMyDates[selectedMyDateKey]?.dateTitle}
                     label='Date Title'
                     placeholder='Date Title'
                     className='w-full'
@@ -245,9 +374,7 @@ export default function MyDatesComponents({
                         },
                       }}
                       label='Date Picker'
-                      defaultValue={moment(
-                        selectedMyDate[selectedMyDateKey].date
-                      )}
+                      defaultValue={moment(allMyDates[selectedMyDateKey]?.date)}
                       onChange={(e) => {
                         updatingMyDateForm();
                         setUpdatedDate(getDateMoment(e || moment()));
@@ -284,10 +411,10 @@ export default function MyDatesComponents({
                   </Box>
                 </Box>
               </>
-            )}
+            </Box>
           </Box>
-        </Box>
-      </Modal>
+        </Modal>
+      )}
 
       {/* modal for clearing all dates */}
       <Modal open={showClearModal} onClose={() => setShowClearModal(false)}>

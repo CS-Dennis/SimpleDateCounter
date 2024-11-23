@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import moment from 'moment';
 import { useContext, useState } from 'react';
-import { AppContext, supabase_client } from '../App';
+import { AppContext, env, supabase_client } from '../App';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { constants } from '../Utils/Constants';
 import { LocalizationProvider, MobileDatePicker } from '@mui/x-date-pickers';
@@ -55,7 +55,9 @@ export default function Home() {
 
     if (context.session?.access_token) {
       await saveDateOnline(newMyDate);
-      console.log('saved date online');
+      if (env === 'dev') {
+        console.log('dev saved date online');
+      }
     } else {
       saveMyDate(newMyDate);
     }
