@@ -22,7 +22,6 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { AppContext, env, supabase_client } from '../App';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { v4 as uuidv4 } from 'uuid';
-import { jwtDecode } from 'jwt-decode';
 
 export default function MyDatesComponents({
   currentMoment,
