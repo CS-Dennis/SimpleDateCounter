@@ -25,7 +25,6 @@ import LoginForm from '../Components/LoginForm';
 import LoadingComponent from '../Components/LoadingComponent';
 import HolidaysComponent from '../Components/HolidaysComponent';
 import MyDatesComponents from '../Components/MyDatesComponents';
-import { jwtDecode } from 'jwt-decode';
 
 export default function Home() {
   const context = useContext(AppContext);
@@ -66,7 +65,7 @@ export default function Home() {
   };
 
   const saveDateOnline = async (newMyData: MyDate) => {
-    const userId = jwtDecode(context.session.access_token).sub;
+    const userId = context.session?.user.id;
     const savedDate = await supabase_client
       .from('MyDates')
       .insert({
