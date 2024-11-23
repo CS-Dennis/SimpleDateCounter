@@ -125,7 +125,7 @@ export default function Home() {
 
                   <Box className='self-center mr-4 flex'>
                     <Box className='mr-4'>
-                      <ExportImportButton />
+                      {!context.session?.access_token && <ExportImportButton />}
                     </Box>
 
                     <Button

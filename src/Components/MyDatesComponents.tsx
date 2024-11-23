@@ -22,6 +22,7 @@ import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { AppContext, env, supabase_client } from '../App';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { v4 as uuidv4 } from 'uuid';
+import { jwtDecode } from 'jwt-decode';
 
 export default function MyDatesComponents({
   currentMoment,
@@ -123,9 +124,25 @@ export default function MyDatesComponents({
     setShowEditModal(false);
   };
 
-  const deleteMyDateOnForm = () => {
-    deleteMyDate(selectedMyDateKey);
-    getAllMyDates();
+  const deleteMyDateOnForm = async () => {
+    // if online
+    if (context.session?.access_token) {
+      console.log('selectedMyDateKey', selectedMyDateKey);
+      console.log('selectedMyDate', selectedMyDate);
+      const { error, status } = await supabase_client
+        .from('MyDates')
+        .delete()
+        .eq('id', selectedMyDateKey);
+      if (env === 'dev') {
+        console.log('error', error, status);
+      }
+      getAllMyDatesOnline();
+    }
+    // if offline
+    else {
+      deleteMyDate(selectedMyDateKey);
+      getAllMyDates();
+    }
     setShowEditModal(false);
   };
 
@@ -136,10 +153,24 @@ export default function MyDatesComponents({
     setShowEditModal(false);
   };
 
-  const deleteAllDates = () => {
+  const deleteAllDates = async () => {
+    // if online
+    if (context.session?.access_token) {
+      const { error, status } = await supabase_client
+        .from('MyDates')
+        .delete()
+        .eq('user_id', context.session?.user.id);
+      if (env === 'dev') {
+        console.log('error', error, status);
+      }
+      getAllMyDatesOnline();
+    }
+    // if offline
+    else {
+      localStorage.setItem(localStorageKeys.myDates, '');
+      getAllMyDates();
+    }
     setShowClearModal(false);
-    localStorage.setItem(localStorageKeys.myDates, '');
-    getAllMyDates();
   };
 
   const sortMyDates = (type: string) => {
