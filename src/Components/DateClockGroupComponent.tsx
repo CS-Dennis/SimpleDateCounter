@@ -21,7 +21,7 @@ export default function DateClockGroupComponent({
   useEffect(() => {
     setInterval(() => {
       setCurrentMoment(moment());
-    }, 100000);
+    }, 1000);
   }, []);
 
   return (
