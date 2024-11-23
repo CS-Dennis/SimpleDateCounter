@@ -148,39 +148,24 @@ export default function MyDatesComponents({
   };
 
   useEffect(() => {
-    // if offline
-    if (context.session?.access_token === undefined) {
-      getAllMyDates();
-    } else {
-      // if logged in
+    // online
+    if (context.session?.access_token) {
       getMyDatesOnline();
     }
+    // offline
+    else {
+      getAllMyDates();
+      if (newMyDateAdded) {
+        setNewMyDateAdded(false);
+      }
+
+      if (context.myDatesUpdated) {
+        context.setMyDatesUpdated(false);
+      }
+    }
+
     console.log('context.session');
-  }, [context.session?.access_token]);
-
-  useEffect(() => {
-    // if offline
-    if (newMyDateAdded && context.session?.access_token === undefined) {
-      getAllMyDates();
-      setNewMyDateAdded(false);
-      console.log('newMyDateAdded');
-    } else {
-      // if logged in
-      getMyDatesOnline();
-    }
-  }, [newMyDateAdded]);
-
-  useEffect(() => {
-    // if offline
-    if (context.myDatesUpdated && context.session?.access_token === undefined) {
-      getAllMyDates();
-      context.setMyDatesUpdated(false);
-      console.log('context.myDatesUpdated');
-    } else {
-      // if logged in
-      getMyDatesOnline();
-    }
-  }, [context.myDatesUpdated]);
+  }, [context.session?.access_token, newMyDateAdded, context.myDatesUpdated]);
 
   return (
     <>
