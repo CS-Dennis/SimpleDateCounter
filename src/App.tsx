@@ -12,6 +12,7 @@ export const AppContext = createContext<any>({ matrixTheme: true });
 const key = import.meta.env.VITE_API_KEY;
 const url = import.meta.env.VITE_SERVICE_URL;
 const env = import.meta.env.VITE_ENV;
+
 export const supabase_client = createClient(url, key);
 
 function App() {
