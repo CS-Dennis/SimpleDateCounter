@@ -198,14 +198,15 @@ export default function MyDatesComponents({
         (a, b) => moment(b.date).valueOf() - moment(a.date).valueOf()
       );
     }
-    console.log('myDatesList', myDatesList);
+    if (env === 'dev') {
+      console.log('myDatesList', myDatesList);
+    }
 
     const newMyDates: any = {};
     // if online
     if (context.session?.access_token) {
       myDatesList.forEach((myDate) => {
         newMyDates[myDate.uuid] = myDate;
-        console.log(myDate.uuid);
       });
 
       setAllMyDates(newMyDates);
