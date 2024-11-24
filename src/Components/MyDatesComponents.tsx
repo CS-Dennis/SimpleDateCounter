@@ -177,6 +177,7 @@ export default function MyDatesComponents({
     // if online
     if (context.session?.access_token) {
       myDates = allMyDates;
+      localStorage.setItem(localStorageKeys.myDatesOnlineSortType, type);
     }
     // if offline
     else {
@@ -230,18 +231,42 @@ export default function MyDatesComponents({
     }
   };
 
-  // operations for logged in users
+  // get mydates online for logged in users
   const getAllMyDatesOnline = async () => {
     const { data } = await supabase_client.from('MyDates').select();
 
+    var sortedData;
+
+    // get the sort type for online myDates
+    const onlineMyDatesSortType = localStorage.getItem(
+      localStorageKeys.myDatesOnlineSortType
+    );
+    // if online sort type exists
+    if (onlineMyDatesSortType && data) {
+      if (onlineMyDatesSortType === 'asc') {
+        sortedData = data.sort(
+          (a, b) => moment(a.date).valueOf() - moment(b.date).valueOf()
+        );
+      } else if (onlineMyDatesSortType === 'desc') {
+        sortedData = data.sort(
+          (a, b) => moment(b.date).valueOf() - moment(a.date).valueOf()
+        );
+      }
+    }
+    // if offline
+    else {
+      sortedData = data;
+    }
+
     // transforma data format
     var transformedData: any = {};
-    data?.forEach((row) => {
+    sortedData?.forEach((row) => {
       transformedData = { ...transformedData, [row.uuid]: row };
     });
 
     setAllMyDates(transformedData);
     setDateKeys(Object.keys(transformedData || ''));
+
     if (env === 'dev') {
       console.log('dev data', transformedData);
     }
