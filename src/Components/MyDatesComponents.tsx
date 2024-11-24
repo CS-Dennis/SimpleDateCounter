@@ -173,9 +173,18 @@ export default function MyDatesComponents({
   };
 
   const sortMyDates = (type: string) => {
-    const myDates = JSON.parse(
-      localStorage.getItem(localStorageKeys.myDates) || ''
-    );
+    var myDates: any = {};
+    // if online
+    if (context.session?.access_token) {
+      myDates = allMyDates;
+    }
+    // if offline
+    else {
+      myDates = JSON.parse(
+        localStorage.getItem(localStorageKeys.myDates) || ''
+      );
+    }
+
     const keys = Object.keys(myDates);
 
     var myDatesList = keys.map((key) => myDates[key]);
@@ -189,15 +198,35 @@ export default function MyDatesComponents({
         (a, b) => moment(b.date).valueOf() - moment(a.date).valueOf()
       );
     }
+    console.log('myDatesList', myDatesList);
 
     const newMyDates: any = {};
-    myDatesList.forEach((myDate) => {
-      const uuid = uuidv4();
-      newMyDates[uuid] = myDate;
-    });
+    // if online
+    if (context.session?.access_token) {
+      myDatesList.forEach((myDate) => {
+        newMyDates[myDate.uuid] = myDate;
+        console.log(myDate.uuid);
+      });
 
-    localStorage.setItem(localStorageKeys.myDates, JSON.stringify(newMyDates));
-    getAllMyDates();
+      setAllMyDates(newMyDates);
+      setDateKeys(Object.keys(newMyDates));
+      if (env === 'dev') {
+        console.log('dev newMyDates', newMyDates);
+        console.log('dev dateKeys', dateKeys);
+      }
+    }
+    // if offline
+    else {
+      myDatesList.forEach((myDate) => {
+        const uuid = uuidv4();
+        newMyDates[uuid] = myDate;
+      });
+      localStorage.setItem(
+        localStorageKeys.myDates,
+        JSON.stringify(newMyDates)
+      );
+      getAllMyDates();
+    }
   };
 
   // operations for logged in users
@@ -207,7 +236,7 @@ export default function MyDatesComponents({
     // transforma data format
     var transformedData: any = {};
     data?.forEach((row) => {
-      transformedData = { ...transformedData, [row.id]: row };
+      transformedData = { ...transformedData, [row.uuid]: row };
     });
 
     setAllMyDates(transformedData);
