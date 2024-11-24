@@ -19,6 +19,7 @@ export const constants = {
 
 export const localStorageKeys = {
   myDates: 'myDates',
+  myDatesOnlineSortType: 'myDatesOnlineSortType',
 };
 
 export const exportHeaders = ['Date Tilte', 'date', 'created', 'modified'];
