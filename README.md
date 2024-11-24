@@ -24,6 +24,6 @@
 
 ### 6. Implement Supabase
 
-i. Add DB and login to allow users to store dates online
+i. Add DB and login to allow users to store dates online (released)
 
 ### Add author section (Added)

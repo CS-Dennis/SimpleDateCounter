@@ -136,16 +136,18 @@ export default function Home() {
                     >
                       Add Date
                     </Button>
-                    <Tooltip
-                      className='ml-1'
-                      title={
-                        <Box className='whitespace-break-spaces'>
-                          {constants.addDateButtonHelpText}
-                        </Box>
-                      }
-                    >
-                      <HelpOutlineIcon />
-                    </Tooltip>
+                    {!context.session?.access_token && (
+                      <Tooltip
+                        className='ml-1'
+                        title={
+                          <Box className='whitespace-break-spaces'>
+                            {constants.addDateButtonHelpText}
+                          </Box>
+                        }
+                      >
+                        <HelpOutlineIcon />
+                      </Tooltip>
+                    )}
                   </Box>
                 </Box>
 

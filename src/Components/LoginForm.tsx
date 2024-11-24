@@ -12,6 +12,8 @@ export default function LoginForm() {
     const { error } = await supabase_client.auth.signOut();
     if (error) {
       console.log(error);
+      localStorage.removeItem('sb-dzmxsxvkgpbqfwtfxtht-auth-token');
+      location.reload();
     }
   };
 
