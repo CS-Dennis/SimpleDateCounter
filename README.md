@@ -22,8 +22,16 @@
 
 ### 5. Clear all MyDates (Released)
 
-### 6. Implement Supabase
+### 6. Implement Supabase (Add DB and login to allow users to store dates online (released))
 
-i. Add DB and login to allow users to store dates online (released)
+#### a. add date (Release)
 
-### Add author section (Added)
+#### b. clear all dates (Released)
+
+#### c. update date
+
+#### d. delete date
+
+### 7. Add a new date and update a date forms update: allow the user to shift days based on the inital input date.
+
+### 8. Add author section (Added)

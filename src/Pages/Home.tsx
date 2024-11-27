@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Grid2 as Grid,
+  IconButton,
   Modal,
   Switch,
   Tab,
@@ -10,7 +11,7 @@ import {
   Tooltip,
 } from '@mui/material';
 import moment from 'moment';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { AppContext, env, supabase_client } from '../App';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { constants } from '../Utils/Constants';
@@ -25,6 +26,8 @@ import LoginForm from '../Components/LoginForm';
 import LoadingComponent from '../Components/LoadingComponent';
 import HolidaysComponent from '../Components/HolidaysComponent';
 import MyDatesComponents from '../Components/MyDatesComponents';
+import RemoveIcon from '@mui/icons-material/Remove';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function Home() {
   const context = useContext(AppContext);
@@ -34,8 +37,20 @@ export default function Home() {
 
   // my date object
   const [dateTitle, setDateTitle] = useState('');
+  const [missingDateTitle, setMissingDateTitle] = useState<boolean>(false);
   const [selectedDate, setSelectedDate] = useState(getDateMoment(moment()));
   const [newMyDateAdded, setNewMyDateAdded] = useState<boolean>(false);
+  const [shiftDateEnabled, setShiftDateEnabled] = useState(false);
+  const [shiftedDate, setShiftedDate] = useState<moment.Moment>(selectedDate);
+  const [shiftNumDays, setShiftNumDays] = useState<number>(0);
+
+  useEffect(() => {
+    var temp = moment(selectedDate);
+    if (env == 'dev') {
+      console.log(moment(temp.add(shiftNumDays, 'days').toISOString()));
+    }
+    setShiftedDate(moment(temp.toISOString()));
+  }, [shiftNumDays, selectedDate]);
 
   const resetModalForm = () => {
     setDateTitle('');
@@ -44,9 +59,15 @@ export default function Home() {
   };
 
   const saveDate = async () => {
+    if (dateTitle.trim() === '') {
+      setMissingDateTitle(true);
+      console.log('error');
+      return;
+    }
+
     // saveMyDate();
     const newMyDate: MyDate = {
-      date: selectedDate,
+      date: shiftDateEnabled ? shiftedDate : selectedDate,
       dateTitle: dateTitle,
       created: moment(),
       modified: moment(),
@@ -62,6 +83,8 @@ export default function Home() {
     }
     setShowModal(false);
     setNewMyDateAdded(true);
+    setMissingDateTitle(false);
+    setShiftDateEnabled(false);
   };
 
   const saveDateOnline = async (newMyData: MyDate) => {
@@ -217,9 +240,12 @@ export default function Home() {
                 <Box className='mt-4'>
                   <TextField
                     placeholder='Date Title'
-                    label='Date Title'
+                    label={`${
+                      missingDateTitle ? 'Missing Date Title' : 'Date Title'
+                    }`}
                     className='w-full'
                     onChange={(e) => setDateTitle(e.target.value)}
+                    error={missingDateTitle ? true : false}
                   />
                 </Box>
 
@@ -232,13 +258,73 @@ export default function Home() {
                           actions: ['today', 'accept'],
                         },
                       }}
-                      label='Date Picker'
+                      label={`Date Picker ${
+                        shiftDateEnabled ? '(Init Date)' : ''
+                      }`}
                       defaultValue={moment()}
                       onChange={(target) =>
                         setSelectedDate(getDateMoment(target || moment()))
                       }
                     />
                   </LocalizationProvider>
+
+                  <Box className='mt-4'>
+                    <Box>
+                      <Button
+                        variant='contained'
+                        onClick={() => setShiftDateEnabled(!shiftDateEnabled)}
+                      >
+                        Shift Date by a # of Days
+                      </Button>
+                    </Box>
+
+                    {shiftDateEnabled && (
+                      <Box>
+                        <Box className='flex mt-4'>
+                          <IconButton
+                            className='self-center'
+                            onClick={() => setShiftNumDays((p) => p - 1)}
+                          >
+                            <RemoveIcon className='text-matrix_jade_green' />
+                          </IconButton>
+
+                          <TextField
+                            defaultValue={0}
+                            type='number'
+                            value={shiftNumDays}
+                            onChange={(e) => {
+                              setShiftNumDays(parseInt(e.target.value));
+                            }}
+                            sx={{ marginX: '20px' }}
+                          />
+
+                          <IconButton
+                            className='self-center'
+                            onClick={() => setShiftNumDays((p) => p + 1)}
+                          >
+                            <AddIcon className='text-matrix_jade_green' />
+                          </IconButton>
+                        </Box>
+
+                        <Box className='mt-4'>
+                          <LocalizationProvider dateAdapter={AdapterMoment}>
+                            <MobileDatePicker
+                              className='w-full'
+                              slotProps={{
+                                actionBar: {
+                                  actions: ['today', 'accept'],
+                                },
+                              }}
+                              label='Final Date'
+                              disabled
+                              // defaultValue={moment()}
+                              value={shiftedDate}
+                            />
+                          </LocalizationProvider>
+                        </Box>
+                      </Box>
+                    )}
+                  </Box>
                 </Box>
 
                 <Box className='flex place-content-end mt-4'>
