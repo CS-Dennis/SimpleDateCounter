@@ -104,7 +104,7 @@ export default function MyDatesComponents({
       const { data, error } = await supabase_client
         .from('MyDates')
         .update({ ...newMyDate })
-        .eq('id', selectedMyDateKey)
+        .eq('id', allMyDates[selectedMyDateKey].id)
         .select();
       if (error) {
         console.log(error);
@@ -126,12 +126,14 @@ export default function MyDatesComponents({
   const deleteMyDateOnForm = async () => {
     // if online
     if (context.session?.access_token) {
-      console.log('selectedMyDateKey', selectedMyDateKey);
-      console.log('selectedMyDate', selectedMyDate);
+      if (env === 'dev') {
+        console.log('selectedMyDateKey', selectedMyDateKey);
+        console.log('selectedMyDate', selectedMyDate);
+      }
       const { error, status } = await supabase_client
         .from('MyDates')
         .delete()
-        .eq('id', selectedMyDateKey);
+        .eq('id', allMyDates[selectedMyDateKey].id);
       if (env === 'dev') {
         console.log('error', error, status);
       }
