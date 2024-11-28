@@ -46,10 +46,11 @@ export default function Home() {
 
   useEffect(() => {
     var temp = moment(selectedDate);
+    temp = moment(temp.add(shiftNumDays, 'days').toISOString());
     if (env == 'dev') {
-      console.log(moment(temp.add(shiftNumDays, 'days').toISOString()));
+      console.log(temp);
     }
-    setShiftedDate(moment(temp.toISOString()));
+    setShiftedDate(temp);
   }, [shiftNumDays, selectedDate]);
 
   const resetModalForm = () => {
