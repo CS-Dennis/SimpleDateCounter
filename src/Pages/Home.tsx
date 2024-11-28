@@ -285,7 +285,13 @@ export default function Home() {
                             className='self-center'
                             onClick={() => setShiftNumDays((p) => p - 1)}
                           >
-                            <RemoveIcon className='text-matrix_jade_green' />
+                            <RemoveIcon
+                              className={`${
+                                context.appTheme.matrixTheme
+                                  ? 'text-matrix_jade_green'
+                                  : 'text-matrix_dark'
+                              }`}
+                            />
                           </IconButton>
 
                           <TextField
@@ -302,7 +308,13 @@ export default function Home() {
                             className='self-center'
                             onClick={() => setShiftNumDays((p) => p + 1)}
                           >
-                            <AddIcon className='text-matrix_jade_green' />
+                            <AddIcon
+                              className={`${
+                                context.appTheme.matrixTheme
+                                  ? 'text-matrix_jade_green'
+                                  : 'text-matrix_dark'
+                              }`}
+                            />
                           </IconButton>
                         </Box>
 
